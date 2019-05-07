@@ -6,7 +6,6 @@
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
-#include "tqdm/tqdm.h"
 
 int main()
 {
