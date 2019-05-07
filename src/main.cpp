@@ -1,16 +1,15 @@
 #ifdef __main__
 
 #include <iostream>
+#include <fstream>
 #include <iomanip>
-#include <chrono>
-#include <thread>
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
+#include "tqdm/tqdm.h"
 
 int main()
 {
-  std :: cout << "At least it starts?" << std :: endl; 
   enum tags {fatty, ninja};
 
   graphics::window my_window; // Just a window
