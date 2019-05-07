@@ -1,6 +1,6 @@
 # NOCS
 
-## (Not Only Colliding Spheres)
+(Not Only Colliding Spheres)
 
 [![docs](https://img.shields.io/readthedocs/:packageName/:version.svg?style=plastic)](https://carlidel.github.io/nocs)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/matteomonti/nocs.svg?style=plastic)](https://github.com/matteomonti/nocs/pulls)
@@ -25,7 +25,6 @@ Exact 2D gas dynamics framework.
 # Table of Contents
 
 - [NOCS](#nocs)
-  - [(Not Only Colliding Spheres)](#not-only-colliding-spheres)
 - [Table of Contents](#table-of-contents)
 - [What is NOCS](#what-is-nocs)
   - [The elements of NOCS](#the-elements-of-nocs)
