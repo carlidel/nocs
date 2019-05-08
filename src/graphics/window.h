@@ -131,20 +131,18 @@ namespace graphics
   __unused std :: vector <sphere> sphere_buffer;
   __unused std :: vector <line> line_buffer;
   __unused std :: atomic <bool> request_drawing(false);
+  __unused std :: atomic <bool> request_closing(false);
 
   class window
   {
-    // Members
-
-    int _id;
-    std :: thread _th;
-
   protected:
 
     // Static members
 
     static bool __started;
     static int __window_count;
+    static int __id;
+    static std :: thread __th;
 
   public:
 
@@ -161,7 +159,8 @@ namespace graphics
     static void draw(const engine &);
     static void draw(const engine &, const uint8_t &);
     static void wait_click();
-    
+    static void close_window();
+
   private:
 
     // Static private methods

@@ -55,7 +55,7 @@ namespace graphics
 #ifdef __graphics__
     if (!__started)
     {
-      _th = std :: thread(window :: start);
+      window :: __th = std :: thread(window :: start);
     }
 #endif
   }
@@ -63,20 +63,7 @@ namespace graphics
   // Destructor
 
   window :: ~window()
-  {
-#ifdef __graphics__
-    _th.join();
-    --__window_count;
-    _id = glutGetWindow();
-    glutLeaveMainLoop();
-
-    if (__window_count == 0)
-    {
-      glutDestroyWindow(_id);
-      __started = false;
-    }
-#endif
-  }
+  {}
 
   // Static methods
 
@@ -117,6 +104,14 @@ namespace graphics
 #endif
   }
 
+  void window :: close_window()
+  {
+#ifdef __graphics__
+    request_closing = true;
+    __th.join();
+#endif
+  }
+
   // Static private methods
 
   void window :: start()
@@ -126,6 +121,7 @@ namespace graphics
     char *myargv[1];
     myargv[0] = strdup("nocs");
     glutInit(&myargc, myargv);
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(600, 600);
     glutCreateWindow(__default_title);
@@ -150,6 +146,14 @@ namespace graphics
     // Set range coordinates
     __started = true;
     glutMainLoop();
+    --__window_count;
+    window :: __id = glutGetWindow();
+
+    if (__window_count == 0)
+    {
+      glutDestroyWindow(window :: __id);
+      __started = false;
+    }
 #endif
   }
 
@@ -175,6 +179,11 @@ namespace graphics
 
       request_drawing = false;
       mtx.unlock();
+    }
+
+    if (request_closing)
+    {
+      glutLeaveMainLoop();
     }
 
 #endif
@@ -241,6 +250,8 @@ namespace graphics
 
   bool window :: __started = false;
   int window :: __window_count = 0;
+  int window :: __id = 0;
+  std :: thread window :: __th = std :: thread();
 
   void window :: list_sphere(const molecule &molecule)
   {
