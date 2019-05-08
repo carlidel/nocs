@@ -1,10 +1,22 @@
 #include "window.h"
 
-bool __enter__ = false;
-bool __click__ = false;
-
 namespace graphics
 {
+  // Global definitions
+  
+  bool __enter__ = false;
+  bool __click__ = false;
+  __unused std :: mutex mtx; // mutex for critical section
+  __unused const char * __default_title = const_cast <char *> ("nocs");
+  __unused constexpr int __default_width = 750;
+  __unused constexpr int __default_height = 750;
+  __unused constexpr int __triangle_amount = 40;
+  __unused constexpr double __twice_pi = 2.0f * M_PI;
+  __unused std :: vector <sphere> sphere_buffer;
+  __unused std :: vector <line> line_buffer;
+  __unused std :: atomic <bool> request_drawing(false);
+  __unused std :: atomic <bool> request_closing(false);
+
   // vector
 
   // Constructors
@@ -60,15 +72,11 @@ namespace graphics
 #endif
   }
 
-  // Destructor
-
-  window :: ~window()
-  {}
-
   // Static methods
 
   void window :: draw(const engine &engine)
   {
+#ifdef __graphics__
     mtx.lock();
     line_buffer.clear();
     sphere_buffer.clear();
@@ -82,10 +90,12 @@ namespace graphics
     });
     request_drawing = true;
     mtx.unlock();
+#endif
   }
 
   void window :: draw(const engine &engine, const uint8_t &tag)
   {
+#ifdef __graphics__
     mtx.lock();
     line_buffer.clear();
     sphere_buffer.clear();
@@ -95,6 +105,7 @@ namespace graphics
     });
     request_drawing = true;
     mtx.unlock();
+#endif
   }
 
   void window :: wait_click()
