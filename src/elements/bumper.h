@@ -50,7 +50,7 @@ public:
 
   // Methods
 
-  const double random_extraction();
+  double random_extraction();
 
 };
 

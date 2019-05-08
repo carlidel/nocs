@@ -49,7 +49,8 @@ const bool & bumper :: randomness() const
 
 // Public Methods
 
-const double bumper :: random_extraction()
+double bumper :: random_extraction()
 {
+  assert(this->_randomness && "Bumper is NOT random!");
   return this->_exp_distribution(*(this->_random_engine));
 }
