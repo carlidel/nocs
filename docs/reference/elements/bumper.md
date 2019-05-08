@@ -32,3 +32,12 @@ In order to have different kind of collision physics, it is possible to create b
 
   * `const vec & position() const`
   * `const double & radius() const`
+  * `const double & temperature() const`
+  * `const bool & multiplicative() const`
+  * `const bool & randomness() const`
+
+#### Methods
+
+  * `double random_extraction()`
+
+    If the bumper is random, performs a random extraction from its exponential distribution.
