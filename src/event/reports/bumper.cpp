@@ -148,6 +148,21 @@ const double & report <events :: bumper> :: bumper :: radius() const
   return this->_event._bumper->radius();
 }
 
+const double & report <events :: bumper> :: bumper :: temperature() const
+{
+  return this->_event._bumper->temperature();
+}
+
+const bool & report <events :: bumper> :: bumper :: multiplicative() const
+{
+  return this->_event._bumper->multiplicative();
+}
+
+const bool & report <events :: bumper> :: bumper :: randomness() const
+{
+  return this->_event._bumper->randomness();
+}
+
 // Constructors
 
 report <events :: bumper> :: report(const events :: bumper & event) : velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event), bumper(event), _event(event)
