@@ -70,7 +70,7 @@ int main()
     std :: cout << "Delta energy for alpha: " << my_report.alpha.energy.delta() << std :: endl;
   });
 
-  for(double time = 0.; time < 0.05; time += 0.001)
+  for(double time = 0.; time < 0.5; time += 0.001)
   {
     my_engine.run(time); // Run UNTIL time
 
