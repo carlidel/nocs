@@ -27,7 +27,6 @@ class bumper
   bool _randomness;
   std :: exponential_distribution <double> _exp_distribution;
   std :: default_random_engine * _random_engine;
-  
 
 public:
 

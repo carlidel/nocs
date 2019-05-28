@@ -24,32 +24,7 @@ class atom;
 
 class atom
 {
-public:
-
-    // Public Nested Classes
-
-	class printer
-	{
-    // Friends
-
-    friend atom :: printer operator << (std :: ostream &, const atom &);
-
-		// Members
-
-		std :: ostream * _out;
-
-		// Constructors
-
-		printer(std :: ostream &);
-
-    public:
-
-		// Operators
-
-		printer operator << (const atom &);
-		template <typename type> std :: ostream & operator << (const type &);
-	};
-
+	
 private:
 
   // Friends
@@ -88,9 +63,5 @@ private:
 
 	atom & position(const vec &);
 };
-
-// Standard Output
-
-atom :: printer operator << (std :: ostream &, const atom &);
 
 #endif

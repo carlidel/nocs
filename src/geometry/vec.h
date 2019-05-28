@@ -62,8 +62,4 @@ struct vec
 
 vec operator * (const double &, const vec &);
 
-// Standard Output
-
-std :: ostream & operator << (std :: ostream &, const vec &);
-
 #endif

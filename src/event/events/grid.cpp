@@ -65,11 +65,4 @@ namespace events
     (engine->*callback)(*(this->_molecule.molecule), 0);
   }
 
-  // Private Methods
-
-  std :: ostream & grid :: print(std :: ostream & out) const
-  {
-    out << "Event grid at time: " << this->_time;
-    return out;
-  }
 }
