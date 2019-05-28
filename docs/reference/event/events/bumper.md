@@ -44,8 +44,24 @@ Class `bumper` represents the collision of a molecule with a bumper as an object
 
     given the engine's main dispatcher, executes the dispatcher's trigger for the event, which will execute the corrispondent requested reports, if any.
 
-#### Standard Output
+### Private elements and methods
 
-  * `friend std :: ostream & operator << (std :: ostream &, const event &)`
+#### Settings
 
-    executes the function `std :: ostream & print(std :: ostream &) const`.
+`time_epsilon` sets the epsilon sensitivity to be used in certain parts of the computation.
+
+#### Private methods
+
+* `double collision(const :: molecule & alpha, const size_t & index_alpha, const :: molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)`
+
+  Given two molecules, indexes of the two atoms under analysis, the time frame under inspection and the eventual translational fold to keep under consideration, checks if the two molecules will collide and returns the collision time if the answer is positive. Returns NaN if it's negative.
+
+#### Static inline methods
+
+* `vec position(const :: molecule & molecule, const size_t & index, const int & fold)`
+  
+  Inline method for quickly obtain the atom of the given index coordinates in the engine's reference system at its current time.
+
+* `vec position(const :: molecule & molecule, const size_t & index, const double & time, const int & fold)`
+
+  Inline method for quickly obtain the atom of the given index coordinates in the engine's reference system at a given time.

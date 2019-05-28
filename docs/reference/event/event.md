@@ -34,8 +34,10 @@ Class `event` is the abstract base class for the engine's event system.
 
     given the engine's main dispatcher, executes the dispatcher's trigger for the event, which will execute the corrispondent requested reports, if any.
 
-#### Standard Output
+### Service nested classes
 
-  * `friend std :: ostream & operator << (std :: ostream &, const event &)`
+#### wrapper
 
-    executes the function `virtual std :: ostream & print(std :: ostream &) const`.
+Subclass `wrapper` allows a proper wrapping for an `event` object so that the engine's event system can properly allocate and compare the timings of the various events generated.
+
+`wrapper` offers basic comparing operators and 2 casting operators.

@@ -37,3 +37,25 @@ Class `hashtable` is a polymorphic implementation of a generic hashtable.
   * `const vtype & operator [] (const ktype & key)`
 
     access the k-th element of the hashtable.
+
+### Private elements
+
+#### Private methods
+
+* `size_t slot(const ktype & key) const`
+  
+  Returns the corresponding index of the object with the given `key`.
+
+* `void realloc(const size_t & alloc)`
+
+  Allocates a new array of the given size an moves the elements of the hashtable to this new array. Called when it's necessary to allocate more memory.
+
+#### Private static methods
+
+* `template <typename type, typename std :: enable_if <sizeof(type) == 4> :: type * = nullptr> static size_t hash(const type & item)`
+  
+  Standard hashing method for an hashtable with `key` type of size 4.
+
+* `template <typename type, typename std :: enable_if <sizeof(type) == 8> :: type * = nullptr> static size_t hash(const type &);`
+  
+  Standard hashing method for an hashtable with `key` type of size 8.

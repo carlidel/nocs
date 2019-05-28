@@ -2,7 +2,7 @@
 
 ### Overview
 
-Polymorphic class `report` gives the user a complete set of tools for the analyisis of an event and its elements in a convenient form. It's also a fundamental element required for building a valid lambda function that can be correctly wrapped by the `callback` class (see **callback** folder documentation) into a valid subscription for the `dispatcher`.
+Polymorphic class `report` gives the user a complete set of tools for the analysis of an event and its elements in a convenient form. It's also a fundamental element required for building a valid lambda function that can be correctly wrapped by the `callback` class (see **callback** folder documentation) into a valid subscription for the `dispatcher`.
 
 This `report` is fully specialized for `events :: molecule`.
 

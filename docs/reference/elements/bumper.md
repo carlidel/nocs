@@ -34,7 +34,12 @@ In order to have different kind of collision physics, it is possible to create b
   * `const double & radius() const`
   * `const double & temperature() const`
   * `const bool & multiplicative() const`
+    
+    Returns if the bumper is multiplicative.
+
   * `const bool & randomness() const`
+    
+    Returns if the bumper has random behavior.
 
 #### Methods
 
