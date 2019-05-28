@@ -155,10 +155,3 @@ molecule molecule :: operator ++ (int)
   ++*this;
   return temp;
 }
-
-// Standard Output
-
-molecule :: printer operator << (std :: ostream & out, const molecule & m)
-{
-	return molecule :: printer(out) << m;
-}
