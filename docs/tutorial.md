@@ -393,6 +393,12 @@ As you can see, thanks to some other syntactic sugar of the C++ language, you ca
 
 ### Gathering informations about specific groups of molecules
 
+When the simulation is not running (i.e. when it's not executing an `engine::run` function), you have at your hands a still photo of your system at a specific time.
+
+For gathering data in a practical way, you can use the method `engine::each`, and directly pass a lambda function to the various elements inside your simulation.
+
+You can see a few examples of usage in the code below:
+
 ```cpp
 {% raw %}
 int main()
@@ -435,9 +441,13 @@ int main()
 {% endraw %}
 ```
 
+For a complete reference on the available getters for a molecule object, please check [this reference file](./reference/molecule/molecule.md).
+
 ### Resetting the energy of one or more molecules
 
-If you want to alter the energy of a molecule and at the same time maintaining all the proportion in the energy distribution (translational and rotational) you can use these methods:
+If you want to alter the energy of a molecule and at the same time maintaining all the proportion in the energy distribution (translational and rotational) you can use these methods shown in the commented code below.
+
+You can make use of the tagging system even for this kind of operation.
 
 ```cpp
 {% raw %}
@@ -459,6 +469,30 @@ int main()
 
 ### And now, some graphics
 
+With the graphical library included (and with the proper compilation flags enabled with Cmake) you can make use of some tools for visualizing the simulation progresses.
+
+The library is based on `Freeglut3` and runs on a completely separated thread.
+
+At this development stage are provided with 4 basic tools:
+
+1. The window initialization command, which is as simple as just declaring a new `window` object:
+
+   ```cpp
+   graphics::window my_window
+   ```
+
+   Please note the presence of the `graphics` namespace.
+
+2. The `window::draw` method, that takes the engine as argument and just draws all the elements in the engine (you can also specify a tag and get only the elements with that tag drawn):
+   ```cpp
+   my_window.draw(my_engine); // Draw everything
+   my_window.draw(my_engine, my_special_tag); // Draw only tagged molecules
+   ```
+
+3. The `window::wait_click()` method, that blocks the entire program execution until a mouse click is detected inside the Freeglut window.
+
+4. The `window::close_window()` method, that closes properly the window, you should use it for exiting the program with elegance and respectfullnes.
+
 ```cpp
 {% raw %}
 
@@ -474,8 +508,7 @@ int main()
   my_engine.add(a_random_molecule);
   my_engine.add(a_random_bumper);
 
-  window my_window;
-  // Initialize a window with standard parameters (which is highly recomended)
+  window my_window; // Initialize the window
 
   my_window.wait_click();
   // Blocks the execution until a mouse click is detected inside the window
@@ -489,22 +522,19 @@ int main()
   // Now I want you window to draw instead
   // all the elements inside engine with tag heavy
 
-  my_window.draw(* a_random_molecule); // Draw that molecule!
-
-  my_window.wait_click();
-
-  my_window.draw(* a_random_bumper); // Draw that bumper!
-
   my_window.wait_click();
 
   // Now if we start the simulation...
-  for(double time = 0.; ; time += 0.01)
+  for(double time = 0.; time <= 10.0; time += 0.01)
   {
     my_engine.run(time); // Run engine UNTIL time...
     my_window.draw(my_engine); // ..and then draw the engine
     if (fmod(time, 1.0) == 0)
       my_window.wait_click(); // If we want to pause after some steps
   }
+
+  my_window.close_window() // Close the window with elegance
+  return 0;
 }
 
 {% endraw %}
