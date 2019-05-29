@@ -2,7 +2,7 @@
 
 ### Overview
 
-Polymorphic class `report` gives the user a complete set of tools for the analyisis of an event and its elements in a convenient form. It's also a fundamental element required for building a valid lambda function that can be correctly wrapped by the `callback` class (see **callback** folder documentation) into a valid subscription for the `dispatcher`.
+Polymorphic class `report` gives the user a complete set of tools for the analysis of an event and its elements in a convenient form. It's also a fundamental element required for building a valid lambda function that can be correctly wrapped by the `callback` class (see **callback** folder documentation) into a valid subscription for the `dispatcher`.
 
 This `report` is fully specialized for `events :: bumper`.
 
@@ -37,6 +37,18 @@ Since the interface is based on many public nested classes, we report directly t
   * `const double & radius() const`
 
     radius of bumper.
+  
+  * `const double & temperature() const`
+
+    temperature of bumper.
+
+  * `const bool & multiplicative() const`
+
+    is the bumper multiplicative?
+
+  * `const bool & randomness() const`
+  
+    is the bumper random?
 
 **Getters for molecule**
 

@@ -29,7 +29,8 @@ Class `molecule` is the object-oriented representation of a generic molecule of 
 
 #### Getters
 
-  * `const size_t & size() const;`
+  * `const size_t & size() const;`    
+    As in number of atoms in the molecule.
   * `const vec & position() const;`
   * `const vec & velocity() const;`
   * `const double & orientation() const;`
@@ -39,6 +40,7 @@ Class `molecule` is the object-oriented representation of a generic molecule of 
   * `const double & inertia_moment() const;`
   * `const double & time() const;`
   * `const int32_t & version() const;`
+    The `version` getter is utilized by the engine's event system in order to check whether or not the molecule has to perform a specific predicted collision. 
 
   * `const double energy() const;`
 
@@ -55,7 +57,7 @@ Class `molecule` is the object-oriented representation of a generic molecule of 
 
   * `void teleport(const vec :: fold & fold)`
   
-    given a `fold` enum (see `vec` reference for more details), translates the molecule.
+    given a `fold` enum (see `vec` reference for more details), translates the molecule inside the toroidal engine.
 
   * `void scale_energy(const double &)`
   

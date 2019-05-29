@@ -75,14 +75,6 @@ public:
   virtual void each(engine *, void (engine :: *)(molecule &, const size_t &)) = 0;
   virtual void callback(dispatcher &);
 
-  // Standard Output
-
-  friend std :: ostream & operator << (std :: ostream &, const event &);
-
-  // Private Methods
-
-  virtual std :: ostream & print(std :: ostream &) const;
-
 };
 
 #endif

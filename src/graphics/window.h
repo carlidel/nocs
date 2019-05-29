@@ -47,14 +47,6 @@
   #endif
 #endif
 
-__unused std :: mutex mtx; // mutex for critical section
-
-__unused const char * __default_title = const_cast <char *> ("nocs");
-__unused constexpr int __default_width = 750;
-__unused constexpr int __default_height = 750;
-__unused constexpr int __triangle_amount = 40;
-__unused constexpr double __twice_pi = 2.0f * M_PI;
-
 namespace graphics
 {
   struct vector
@@ -68,10 +60,6 @@ namespace graphics
 
     vector();
     vector(double x, double y);
-
-    // Destructor
-
-    ~vector() = default;
   };
 
   struct color
@@ -86,10 +74,6 @@ namespace graphics
 
     color();
     color(unsigned char red, unsigned char green, unsigned char blue);
-
-    // Destructor
-
-    ~color() = default;
   };
 
   struct sphere
@@ -104,10 +88,6 @@ namespace graphics
 
     sphere();
     sphere(vector center, double radius, color c = {0, 0, 1});
-
-    // Destructor
-
-    ~sphere() = default;
   };
 
   struct line
@@ -122,29 +102,18 @@ namespace graphics
 
     line();
     line(vector beg, vector end, color c = {1, 0, 0});
-
-    // Destructor
-
-    ~line() = default;
   };
-
-  __unused std :: vector <sphere> sphere_buffer;
-  __unused std :: vector <line> line_buffer;
-  __unused std :: atomic <bool> request_drawing(false);
 
   class window
   {
-    // Members
-
-    int _id;
-    std :: thread _th;
-
   protected:
 
     // Static members
 
     static bool __started;
     static int __window_count;
+    static int __id;
+    static std :: thread __th;
 
   public:
 
@@ -152,16 +121,13 @@ namespace graphics
 
     window();
 
-    // Destructor
-
-    ~window();
-
     // Static methods
 
     static void draw(const engine &);
     static void draw(const engine &, const uint8_t &);
     static void wait_click();
-    
+    static void close_window();
+
   private:
 
     // Static private methods

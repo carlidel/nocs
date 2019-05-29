@@ -1,27 +1,5 @@
 #include "molecule.h"
 
-// printer
-
-// Constructors
-
-molecule :: printer :: printer(std :: ostream & out) : _out(& out)
-{
-  (*(this->_out)) << std :: endl << std :: setw(16) << "position" << std :: setw(16) << "velocity" << std :: setw(16) << "orientation" << std :: setw(16) << "ang. velocity" << std :: setw(8) << "time" << std :: setw(8) << "version" << std :: endl;
-}
-
-// Operators
-
-molecule :: printer molecule :: printer :: operator << (const molecule & m)
-{
-  (*(this->_out)) << std :: endl << std :: setw(16) << m.position() << std :: setw(16) << m.velocity() << std :: setw(16) << m.orientation() << std :: setw(16) << m.angular_velocity() << std :: setw(8) << m.time() << std :: setw(8) << m.version() << std :: endl;
-	return *this;
-}
-
-template <typename type> std :: ostream & molecule :: printer :: operator << (const type & x)
-{
-	return (*(this->_out)) << x;
-}
-
 // molecule
 
 // Constructors
@@ -176,11 +154,4 @@ molecule molecule :: operator ++ (int)
   molecule temp = *this;
   ++*this;
   return temp;
-}
-
-// Standard Output
-
-molecule :: printer operator << (std :: ostream & out, const molecule & m)
-{
-	return molecule :: printer(out) << m;
 }

@@ -4,28 +4,6 @@
 
 Class `vec` implements an object-oriented interface to two-dimensional vectors of `double`, offering operators for all its elementary operations.
 
-### Example usage
-
-```c++
-#include <iostream>
-
-#include "geometry/vec.h"
-
-int main()
-{
-  vec my_vec(10.5, 5.2);
-  std :: cout << my_vec << std :: endl; // Prints (10.5, 5.2)
-
-  my_vec.x -= 5.5;
-  my_vec.y = 15;
-  std :: cout << my_vec << std :: endl; // Prints (5, 15)
-
-  std :: cout << my_vec.normalize() << endl; // Prints (0.25, 0.75)
-
-  // Etc
-}
-```
-
 ### Interface
 
 #### Constructors

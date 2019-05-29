@@ -8,7 +8,7 @@ Class `grid` implements a subdivision of the simulation zone into smaller region
 
 #### `class mark`
 
-this class is friend with `grid` and, when included into an object of the simulation (like `molecule`), it's used to keep track of the position of that object inside the grid.
+this class is friend with `grid` and, when included into an object of the simulation (like `molecule`), it's used to keep track of the position of that object inside the grid using two `size_t` variables.
 
 **Getters**
 
@@ -65,3 +65,13 @@ this class is friend with `grid` and, when included into an object of the simula
   * `template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type * = nullptr> void each(const size_t & x_coordinate, const size_t & y_coordinate, const lambda & function)`
 
     given the coordinates of a region and a lambda function that takes as argument a bumper, executes that function to each bumper inside the chosen region.
+
+### Private methods
+
+* `void add(molecule & molecule, const size_t & x, const size_t & y)`
+  
+  adds the molecule to the grid and also modifies its mark object.
+
+* `void add(bumper & bumper, const size_t & x, const size_t & y)`
+  
+  adds the bumper to the grid and also modifies its mark object.

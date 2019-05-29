@@ -56,11 +56,6 @@ namespace events
     bool resolve();
     void each(engine *, void (engine :: *)(:: molecule &, const size_t &));
 
-  private:
-
-    // Private Methods
-
-    std :: ostream & print(std :: ostream &) const;
   };
 }
 

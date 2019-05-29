@@ -21,31 +21,6 @@ class molecule;
 
 class molecule
 {
-public:
-
-  // Nested Classes
-
-	class printer
-	{
-    // Friends
-
-    friend molecule :: printer operator << (std :: ostream &, const molecule &);
-
-		// Members
-
-		std :: ostream * _out;
-
-		// Constructors
-
-		printer(std :: ostream &);
-
-	public:
-
-		// Operators
-
-		printer operator << (const molecule &);
-		template <typename type> std :: ostream & operator << (const type &);
-	};
 
 public:
 
@@ -114,9 +89,5 @@ public:
 	molecule & operator ++ ();
 	molecule operator ++ (int);
 };
-
-// Standard Output
-
-molecule :: printer operator << (std :: ostream &, const molecule &);
 
 #endif

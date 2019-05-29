@@ -97,8 +97,6 @@ namespace events
 
     // Private methods
 
-    std :: ostream & print(std :: ostream &) const;
-
     double collision(const :: molecule &, const size_t &, const :: molecule &, const size_t &, const double &, const double &, const int & = vec :: direct);
 
     // Static private methods

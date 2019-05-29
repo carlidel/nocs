@@ -17,3 +17,10 @@ Class `atom` is the base component for class `molecule` and represents a single 
  * `const vec & position() const`
  * `const vec & radius() const`
  * `const vec & mass() const`
+
+### Private Methods and Interface
+
+#### Setters
+
+ * `atom & position(const vec &)`
+   Given a vector, changes the position of the atom. This is used by the friend class `molecule` during a molecule construction, so that it is possible to properly normalize the distribution of a set of atoms.

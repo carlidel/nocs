@@ -28,7 +28,7 @@ Class `tag` is what allows to identify any object of the simulation with a serie
 
   * `const size_t & references() const`
 
-    gets the number of references that the object has inside the queue of events inside the engine. (this element is fundamental for the correct implementation of the **resetter** mechanism).
+    gets the number of references that the object has inside the queue of events inside the engine. (this element is fundamental for the correct implementation of the `remove` method in the `engine` class).
 
 **Operators**
 
@@ -36,9 +36,23 @@ Class `tag` is what allows to identify any object of the simulation with a serie
 
     returns the i-th tag.
 
+**Private methods**
+
+  * `void add(const unit8_t & tag)`
+
+    adds the given tag to the object.
+
+  * `void remove(const unit8_t & tag)`
+
+    removes the given tag from the object.
+
+**Private operators**
+
+Incremental and decremental operators are implemented in order to quickly manage the `_references` variable, which keeps track of the number of references to the object inside of the event system.
+
 ### Interface
 
-#### Public memebers
+#### Public members
 
   * `resetter reset`
 
@@ -129,3 +143,25 @@ Class `tag` is what allows to identify any object of the simulation with a serie
   * `template <typename etype, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> void unsubscribe(const size_t & id);`
 
     given the id of the subscription, cancels the subscription.
+
+#### Private methods
+
+* `double elasticity(const molecule & alpha, const molecule & beta)`
+
+  Given 2 molecules, access the corresponding elasticity value, depending on the molecules' tag, and then returns it. This method is called when building molecule collision events.
+
+* `void refresh(molecule & molecule, const size_t & skip)`
+
+  Given a molecule, the engine explore all the possible future collisions for the molecule in its current condition, considering the elements in the grid neighborhoods. If a tag is give as `skip`, it will ignore the molecules with the given tag.
+
+* `void incref(molecule & molecule, const size_t &)`
+
+  Increments the molecule's reference count. This particular function signature is used so that it's possible to use the method `each`.
+
+* `void decref(molecule & molecule, const size_t &)`
+
+  Decrements the molecule's reference count. This particular function signature is used so that it's possible to use the method `each`.
+
+* `void collect()`
+
+  Activates the garbage collector of the engine and deletes the molecules that are both marked for elimination and without references in the event system.

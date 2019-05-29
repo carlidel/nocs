@@ -122,10 +122,3 @@ vec operator * (const double & lho, const vec & rho)
 {
   return rho * lho;
 }
-
-// Standard Output
-
-std :: ostream & operator << (std :: ostream & out, const vec & v)
-{
-  return out << "(" << v.x << ", " << v.y << ")";
-}

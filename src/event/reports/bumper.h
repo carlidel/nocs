@@ -141,6 +141,9 @@ public:
 
     const vec & position() const;
     const double & radius() const;
+    const double & temperature() const;
+    const bool & multiplicative() const;
+    const bool & randomness() const;
 
   } bumper;
 

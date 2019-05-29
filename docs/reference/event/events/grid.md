@@ -35,9 +35,3 @@ Class `grid` represents a molecule changing region inside the engine's grid as a
   * `virtual void each(engine * engine, void (engine :: *callback)(molecule &, const size_t &))`
 
     given the working engine and a method of the engine that takes as argument a `molecule &` and a `const size_t &`, executes the given method to each molecule involved in the event. (In this case, one molecule)
-
-#### Standard Output
-
-  * `friend std :: ostream & operator << (std :: ostream &, const event &)`
-
-    executes the function `std :: ostream & print(std :: ostream &) const`.

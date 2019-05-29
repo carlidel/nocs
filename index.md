@@ -4,7 +4,9 @@
 
 For general information about NOCS, please check the [README](./README.md).
 
-## Example files Index
+## NOCS tutorial
+
+For a little tutorial about how to use NOCS, please check [here](./docs/tutorial.md).
 
 ## Source Code Reference
 

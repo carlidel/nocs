@@ -1,10 +1,22 @@
 #include "window.h"
 
-bool __enter__ = false;
-bool __click__ = false;
-
 namespace graphics
 {
+  // Global definitions
+  
+  bool __enter__ = false;
+  bool __click__ = false;
+  __unused std :: mutex mtx; // mutex for critical section
+  __unused const char * __default_title = const_cast <char *> ("nocs");
+  __unused constexpr int __default_width = 750;
+  __unused constexpr int __default_height = 750;
+  __unused constexpr int __triangle_amount = 40;
+  __unused constexpr double __twice_pi = 2.0f * M_PI;
+  __unused std :: vector <sphere> sphere_buffer;
+  __unused std :: vector <line> line_buffer;
+  __unused std :: atomic <bool> request_drawing(false);
+  __unused std :: atomic <bool> request_closing(false);
+
   // vector
 
   // Constructors
@@ -55,33 +67,16 @@ namespace graphics
 #ifdef __graphics__
     if (!__started)
     {
-      _th = std :: thread(window :: start);
-    }
-#endif
-  }
-
-  // Destructor
-
-  window :: ~window()
-  {
-#ifdef __graphics__
-    _th.join();
-    --__window_count;
-    _id = glutGetWindow();
-    glutLeaveMainLoop();
-
-    if (__window_count == 0)
-    {
-      glutDestroyWindow(_id);
-      __started = false;
+      window :: __th = std :: thread(window :: start);
     }
 #endif
   }
 
   // Static methods
 
-  void window :: draw(const engine &engine)
+  void window :: draw(__unused const engine &engine)
   {
+#ifdef __graphics__
     mtx.lock();
     line_buffer.clear();
     sphere_buffer.clear();
@@ -95,10 +90,12 @@ namespace graphics
     });
     request_drawing = true;
     mtx.unlock();
+#endif
   }
 
-  void window :: draw(const engine &engine, const uint8_t &tag)
+  void window :: draw(__unused const engine &engine, __unused const uint8_t &tag)
   {
+#ifdef __graphics__
     mtx.lock();
     line_buffer.clear();
     sphere_buffer.clear();
@@ -108,12 +105,21 @@ namespace graphics
     });
     request_drawing = true;
     mtx.unlock();
+#endif
   }
 
   void window :: wait_click()
   {
 #ifdef __graphics__
     window :: thread_wait_click();
+#endif
+  }
+
+  void window :: close_window()
+  {
+#ifdef __graphics__
+    request_closing = true;
+    __th.join();
 #endif
   }
 
@@ -126,6 +132,7 @@ namespace graphics
     char *myargv[1];
     myargv[0] = strdup("nocs");
     glutInit(&myargc, myargv);
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(600, 600);
     glutCreateWindow(__default_title);
@@ -150,6 +157,14 @@ namespace graphics
     // Set range coordinates
     __started = true;
     glutMainLoop();
+    --__window_count;
+    window :: __id = glutGetWindow();
+
+    if (__window_count == 0)
+    {
+      glutDestroyWindow(window :: __id);
+      __started = false;
+    }
 #endif
   }
 
@@ -175,6 +190,11 @@ namespace graphics
 
       request_drawing = false;
       mtx.unlock();
+    }
+
+    if (request_closing)
+    {
+      glutLeaveMainLoop();
     }
 
 #endif
@@ -241,6 +261,8 @@ namespace graphics
 
   bool window :: __started = false;
   int window :: __window_count = 0;
+  int window :: __id = 0;
+  std :: thread window :: __th = std :: thread();
 
   void window :: list_sphere(const molecule &molecule)
   {

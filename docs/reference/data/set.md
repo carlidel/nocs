@@ -30,4 +30,4 @@ Class `set` is a polymorphic implementation of the set data structure.
 
   * `template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda & function) const`
 
-    given a lambda `function` that takes as argument a variable of the same type of the set, executes the lambda function over each element of the set.
+    given a lambda `function` that takes as argument a variable of the same type of the set, executes the lambda function over each element of the set. The service nested class is used in order to check the correct signature of the function. If the signature is not valid, you will get a compilation error.

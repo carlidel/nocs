@@ -30,8 +30,8 @@ std :: cout << secant :: compute(function, -0, 5) << std :: endl; // Prints 2
 
 #### Static methods
 
- * `static double compute(const lambda & function, double lower_bound, double upper_bound)`
+ * `template <typename type, typename std :: enable_if <secant :: valid <type> :: value> :: type *> double secant :: compute(const type & f, double a, double b)`
     
-    using secant method, returns the zero of function inside the range [lower_bound, upper_bound].
+    using secant method, returns the zero of function inside the range [lower_bound, upper_bound]. The templatization, with the help of the Service nested classes, checks if the passed function `f` is a valid type function. If not, you will get a compilation error.
     
     **REMARK: works only if in the given range the zero is unique and the function is monotonic**

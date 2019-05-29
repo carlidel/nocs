@@ -35,3 +35,9 @@ Actual part of the class that implements the energy reset system.
   * `energy energy`
 
     by placing the service nested class `energy` as a member, it is possible for the user to request resets in a nice format. (e.g. `my_engine.reset.energy.tag(my_tag, 1);` where `my_engine` is an `engine` that has a `resetter` named `reset` and `energy` is actually contained into `reset`)
+
+#### Private constructor
+
+* `resetter(engine & engine)`
+
+  We place this constructor as private since we want it to be callable only by `friend class engine`.

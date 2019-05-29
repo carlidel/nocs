@@ -30,14 +30,14 @@ std :: cout << gss :: min(function, -1, 2) << std :: endl; // Prints 0
 
 #### Static methods
 
- * `static double min(const lambda & function, double lower_bound, double upper_bound)`
+ * `template <typename type, typename std :: enable_if <gss :: valid <type> :: value> :: type *> double gss :: min(const type & f, double a, double b)`
     
-    given a valid function, returns the minimum of function in the range [lower_bound, upper_bound].
+    given a valid function, returns the minimum of function in the range [lower_bound, upper_bound]. The templatization, with the help of the Service nested classes, checks if the passed function `f` is a valid type function. If not, you will get a compilation error.
     
     **REMARK: this only works if the minimum is unique inside the given range**
 
- * `static double max(const lambda & function, double lower_bound, double upper_bound)`
+ * `template <typename type, typename std :: enable_if <gss :: valid <type> :: value> :: type *> double gss :: max(const type & f, double a, double b)`
     
-    given a valid function, returns the maximum of function in the range [lower_bound, upper_bound].
+    given a valid function, returns the maximum of function in the range [lower_bound, upper_bound]. The templatization, with the help of the Service nested classes, checks if the passed function `f` is a valid type function. If not, you will get a compilation error.
     
     **REMARK: this only works if the maximum is unique inside the given range**

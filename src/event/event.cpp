@@ -65,18 +65,3 @@ double event :: time() const
 void event :: callback(dispatcher &)
 {
 }
-
-// Standard Output
-
-std :: ostream & operator << (std :: ostream & out, const event & event)
-{
-  return event.print(out);
-}
-
-// Private Methods
-
-std :: ostream & event :: print(std :: ostream & out) const
-{
-  out << "Event at time: " << this->_time;
-  return out;
-}
