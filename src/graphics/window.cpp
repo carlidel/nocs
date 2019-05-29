@@ -74,7 +74,7 @@ namespace graphics
 
   // Static methods
 
-  void window :: draw(const engine &engine)
+  void window :: draw(__unused const engine &engine)
   {
 #ifdef __graphics__
     mtx.lock();
@@ -93,7 +93,7 @@ namespace graphics
 #endif
   }
 
-  void window :: draw(const engine &engine, const uint8_t &tag)
+  void window :: draw(__unused const engine &engine, __unused const uint8_t &tag)
   {
 #ifdef __graphics__
     mtx.lock();
