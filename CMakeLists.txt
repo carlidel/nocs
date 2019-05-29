@@ -94,6 +94,7 @@ endif()
 
 set(SRC_DIR    ${CMAKE_SOURCE_DIR}/src          CACHE PATH "Path where find cpp files"                        )
 set(TEST_DIR   ${CMAKE_SOURCE_DIR}/test         CACHE PATH "Path where find test files"                       )
+set(EXAM_DIR   ${CMAKE_SOURCE_DIR}/examples     CACHE PATH "Path where find example files"                    )
 set(OBJ_DIR    ${CMAKE_SOURCE_DIR}/obj          CACHE PATH "Path where obj will be installed"            FORCE)
 set(OUT_DIR    ${CMAKE_SOURCE_DIR}/bin          CACHE PATH "Path where outputs will be installed"        FORCE)
 set(LIB_DIR    ${CMAKE_SOURCE_DIR}/lib          CACHE PATH "Path where lib will be installed"            FORCE)
@@ -105,6 +106,7 @@ file(GLOB_RECURSE SRC    "${SRC_DIR}/*.cpp")
 file(GLOB_RECURSE EXE    "${SRC_DIR}/*.cpp")
 
 include_directories(${SRC_DIR})
+include_directories(${EXAM_DIR})
 include_directories(${TEST_DIR})
 
 if (${CMAKE_CXX_FLAGS})
@@ -164,6 +166,21 @@ if (GRAPHICS)
   target_compile_definitions(main PRIVATE __graphics__)
 endif()
 add_dependencies(exec main)
+
+# examplesexec
+add_custom_target(testing)
+file(GLOB EXAMPLE_SOURCES ${EXAM_DIR}/*.cpp)
+foreach(testsourcefile ${EXAMPLE_SOURCES})
+    string(REPLACE ".cpp" "" middle ${testsourcefile})
+    string(REPLACE "${EXAM_DIR}/" "" testname ${middle})
+    add_executable(${testname} ${testsourcefile})
+    target_link_libraries(${testname} ${linked_libs} ${nocslib})
+    target_compile_definitions(${testname} PRIVATE __main__)
+    if (GRAPHICS)
+      target_compile_definitions(${testname} PRIVATE __graphics__)
+    endif()
+    add_dependencies(testing ${testname})
+endforeach( testsourcefile ${APP_SOURCES} )
 
 # testexec
 add_custom_target(Testing)
