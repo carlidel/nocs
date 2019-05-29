@@ -12,9 +12,9 @@
 
 // Tests
 
-TEST_CASE("Molecule initialize correctly and prints output", "[constructors] [printers]")
+TEST_CASE("Molecule initialize correctly", "[constructors] [printers]")
 {
-  SECTION("Initializing and printing")
+  SECTION("Initializing")
   {
     std :: vector<atom> a;
 

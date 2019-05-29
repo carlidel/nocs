@@ -183,8 +183,9 @@ foreach(testsourcefile ${EXAMPLE_SOURCES})
 endforeach( testsourcefile ${APP_SOURCES} )
 
 # testexec
+file(GLOB_RECURSE TEST    "${TEST_DIR}/*.cpp")
 add_custom_target(Testing)
-add_executable(Test ${TEST_DIR}/test.cpp)
+add_executable(Test ${TEST})
 target_link_libraries(Test ${linked_libs} ${nocslib})
 target_compile_definitions(Test PRIVATE __test__)
 add_dependencies(Testing Test)
