@@ -19,7 +19,7 @@ Exact 2D gas dynamics framework.
 
 | **Build Status**              |
 |:-----------------------------:|
-| **Linux / MacOS** : [![travis](https://travis-ci.org/carlidel/nocs.svg?branch=master)](https://travis-ci.org/carlidel/nocs/nocs) |
+| **Linux / MacOS** : [![travis](https://travis-ci.com/carlidel/nocs.svg?branch=master)](https://travis-ci.com/carlidel/nocs) |
 |**Windows** : in development|
 
 # Table of Contents
