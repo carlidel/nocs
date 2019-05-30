@@ -82,7 +82,7 @@ After you have written your code in `src/main.cpp`, you can execute the compilat
 5. You will now have your executable `main` in the `bin` folder.
 6. You will also find an executable for every source file available in the `examples` folder
 
-## Documentation
+# Documentation
 
 You can explore the general source code documentation by using the [index page](https://carlidel.github.io/nocs).
 
