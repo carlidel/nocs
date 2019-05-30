@@ -32,6 +32,7 @@ Exact 2D gas dynamics framework.
   - [Dependencies](#dependencies)
   - [Compiling commands](#compiling-commands)
     - [Compile everything from source](#compile-everything-from-source)
+- [Documentation](#documentation)
 
 # What is NOCS
 
