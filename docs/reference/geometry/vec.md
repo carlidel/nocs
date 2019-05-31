@@ -2,7 +2,9 @@
 
 ### Overview
 
-Class `vec` implements an object-oriented interface to two-dimensional vectors of `double`, offering operators for all its elementary operations.
+Class `vec` implements in an object-oriented fashion two-dimensional euclidean vectors of `double`, offering operators for all its elementary operations.
+
+Nested service classes are provided in order to deal properly with the 2D toroidal space of the simulation.
 
 ### Interface
 
