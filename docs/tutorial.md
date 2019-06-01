@@ -427,9 +427,9 @@ int main()
   (
     heavy,
     [&](const molecule & current_molecule)
-  /* Dear engine, for each molecule with tag fatty, please execute this lambda
+  /* Dear engine, for each molecule with tag heavy, please execute this lambda
      that accepts a const reference to the current molecule and captures
-     fatty_total_energy.
+     heavy_total_energy.
      Each time it is called the lambda adds to total_heavy_energy the energy
      of the current molecule.
      Also known as: sum the energies of all the heavy molecules */
