@@ -1,5 +1,23 @@
 # Getting started with NOCS
 
+- [Getting started with NOCS](#getting-started-with-nocs)
+  - [The elements of NOCS](#the-elements-of-nocs)
+    - [Space and grid](#space-and-grid)
+    - [Molecules](#molecules)
+    - [Bumpers](#bumpers)
+  - [Basic commands](#basic-commands)
+    - [Libraries to be included](#libraries-to-be-included)
+    - [Declaring the fundamental thing](#declaring-the-fundamental-thing)
+      - [How to deal with the grid](#how-to-deal-with-the-grid)
+    - [Building your first molecules and giving them a nice tag](#building-your-first-molecules-and-giving-them-a-nice-tag)
+    - [Building a bumper and placing it inside the engine](#building-a-bumper-and-placing-it-inside-the-engine)
+    - [Changing the elasticity of the collision between two molecules](#changing-the-elasticity-of-the-collision-between-two-molecules)
+    - [Executing the simulation](#executing-the-simulation)
+    - [Subscribing to an event](#subscribing-to-an-event)
+    - [Gathering informations about specific groups of molecules](#gathering-informations-about-specific-groups-of-molecules)
+    - [Resetting the energy of one or more molecules](#resetting-the-energy-of-one-or-more-molecules)
+    - [And now, some graphics](#and-now-some-graphics)
+
 ## The elements of NOCS
 
 In NOCS you are provided with a **1x1 empty space** you can fill up freely with **molecules**, composed by rigid spheres of arbitrary mass and radius, and **bumpers**, immovable spheres which can either be completely elastic in the collisions or instead execute different kinds of processing when colliding with a molecule. In order to speed up the simulation and avoid useless computations, you can set up a **grid** for subdividing your space.
