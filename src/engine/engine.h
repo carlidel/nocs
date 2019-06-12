@@ -141,6 +141,7 @@ public:
   // Getters
 
   const size_t & fineness() const;
+  const size_t & event_heap_size() const;
 
   // Setters
 

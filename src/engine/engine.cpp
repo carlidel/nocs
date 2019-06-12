@@ -126,6 +126,11 @@ const size_t & engine :: fineness() const
   return this->_grid.fineness();
 }
 
+const size_t & engine :: event_heap_size() const
+{
+  return this->_events.size();
+}
+
 // Setters
 
 void engine :: elasticity(const double & elasticity)
