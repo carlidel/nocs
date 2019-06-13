@@ -185,10 +185,12 @@ TEST_CASE("Tag system and data gathering works correctly", "[data] [tags] [lambd
         bumper bum({0.80, 0.5}, 0.05);
         bumper bum2({0.80, 0.8}, 0.05);
 
-        size_t id = my_engine.add(mol1);
+        my_engine.add(mol1);
         my_engine.add(bum);
         size_t id = my_engine.add(mol2);
         my_engine.add(bum2);
+
+        my_engine.tag(id, tag1);
 
         int caught_count = 0;
         bool caught = false;
@@ -203,7 +205,7 @@ TEST_CASE("Tag system and data gathering works correctly", "[data] [tags] [lambd
         my_engine.run(0.8);
 
         REQUIRE(caught_count == 2);
-        REQUIRE(caught)
+        REQUIRE(caught);
     }
 
     SECTION("Each method works (no tag)")
