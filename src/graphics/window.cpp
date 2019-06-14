@@ -67,6 +67,7 @@ namespace graphics
 #ifdef __graphics__
     if (!__started)
     {
+      request_closing = false;
       window :: __th = std :: thread(window :: start);
     }
 #endif
@@ -78,16 +79,19 @@ namespace graphics
   {
 #ifdef __graphics__
     mtx.lock();
+    // Reset buffers
     line_buffer.clear();
     sphere_buffer.clear();
+    // Fill line_buffer 
     window :: grid(engine);
+    // Fill sphere_buffer
     engine.each<molecule>([&](const molecule &molecule) {
       window :: list_sphere(molecule);
     });
-
     engine.each<bumper>([&](const bumper &bumper) {
       window :: list_sphere(bumper);
     });
+    // Set shared switch on
     request_drawing = true;
     mtx.unlock();
 #endif
@@ -97,12 +101,16 @@ namespace graphics
   {
 #ifdef __graphics__
     mtx.lock();
+    // Reset buffers
     line_buffer.clear();
     sphere_buffer.clear();
+    // Fill line_buffer
     window :: grid(engine);
+    // Fill sphere_buffer
     engine.each<molecule>(tag, [&](const molecule &molecule) {
       window :: list_sphere(molecule);
     });
+    // Set shared switch on
     request_drawing = true;
     mtx.unlock();
 #endif
@@ -128,21 +136,27 @@ namespace graphics
   void window :: start()
   {
 #ifdef __graphics__
+    // Basic setup for startup
     int myargc = 1;
     char *myargv[1];
     myargv[0] = strdup("nocs");
     glutInit(&myargc, myargv);
+    // Fundamental options
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(600, 600);
     glutCreateWindow(__default_title);
+    // White window
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Set proper projection method
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
+    // Set Renderer funcion and timer
     glutDisplayFunc(window :: render);
     glutTimerFunc(0, window :: timer, 0);
+    // Elements for wait_click()
     glutMouseFunc([](int button, __unused int state, __unused int x, __unused int y) {
       switch (button)
       {
@@ -154,17 +168,13 @@ namespace graphics
         break;
       }
     });
-    // Set range coordinates
+    // Set boolean on true and enter in MainLoop
     __started = true;
     glutMainLoop();
-    --__window_count;
-    window :: __id = glutGetWindow();
-
-    if (__window_count == 0)
-    {
-      glutDestroyWindow(window :: __id);
-      __started = false;
-    }
+    // We exit the MainLoop. Execute closing.
+    if (glutGetWindow())
+      glutDestroyWindow(glutGetWindow());
+    __started = false;
 #endif
   }
 
@@ -260,7 +270,6 @@ namespace graphics
   // Static members
 
   bool window :: __started = false;
-  int window :: __window_count = 0;
   int window :: __id = 0;
   std :: thread window :: __th = std :: thread();
 
