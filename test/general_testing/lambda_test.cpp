@@ -210,10 +210,73 @@ TEST_CASE("Tag system and data gathering works correctly", "[data] [tags] [lambd
 
     SECTION("Each method works (no tag)")
     {
+        engine my_engine(1);
+        
+        molecule mol1(
+            {{{{0.0, 0.0}, 1., 0.05}}},
+            {0.20, 0.5},
+            {1, 0});
+
+        molecule mol2(
+            {{{{0.0, 0.0}, 1., 0.05}}},
+            {0.20, 0.8},
+            {1, 0});
+
+        bumper bum({0.80, 0.5}, 0.05);
+        bumper bum2({0.80, 0.8}, 0.05);
+
+        my_engine.add(mol1);
+        my_engine.add(mol2);
+        my_engine.add(bum);
+        my_engine.add(bum2);
+
+        double mol_sum = 0;
+        double bum_sum = 0;
+
+        my_engine.each<molecule>([&](const molecule &current_molecule) {
+            mol_sum += current_molecule.velocity().x;
+        });
+
+        my_engine.each<bumper>([&](const bumper &current_bumper) {
+            bum_sum += current_bumper.radius();
+        });
+
+        REQUIRE(mol_sum == 2.0);
+        REQUIRE(bum_sum == 0.1);
     }
 
     SECTION("Each method works (with tag)")
     {
+        enum tags{my_tag};
+        engine my_engine(1);
 
+        molecule mol1(
+            {{{{0.0, 0.0}, 1., 0.05}}},
+            {0.20, 0.5},
+            {1, 0});
+
+        molecule mol2(
+            {{{{0.0, 0.0}, 1., 0.05}}},
+            {0.20, 0.8},
+            {1, 0});
+
+        my_engine.add(mol1);
+        size_t id = my_engine.add(mol2);
+
+        my_engine.tag(id, my_tag);
+        
+        double mol_all = 0;
+        double mol_tag = 0;
+
+        my_engine.each<molecule>([&](const molecule &current_molecule) {
+            mol_all += current_molecule.velocity().x;
+        });
+
+        my_engine.each<molecule>(my_tag, [&](const molecule &current_molecule) {
+            mol_tag += current_molecule.velocity().x;
+        });
+
+        REQUIRE(mol_all == 2.0);
+        REQUIRE(mol_tag == 1.0);
     }
 }
