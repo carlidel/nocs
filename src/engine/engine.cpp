@@ -297,8 +297,6 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
 
   for(ssize_t dx = -1; dx <= 1; dx++)
   {
-    // Configure x fold
-
     ssize_t x = molecule.mark.x() + dx;
 
     int fold = vec :: direct;
@@ -309,8 +307,8 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
       fold |= vec :: left;
 
     x = (x + this->_grid.fineness()) % this->_grid.fineness();
-      
-    // xline event
+
+    // Bumper event
 
     this->_grid.each <xline> (x, 0, [&](xline & xline)
     {
@@ -324,18 +322,27 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
       else
         delete event;
     });
-  
+  }
+
+  for(ssize_t dx = -1; dx <= 1; dx++)
     for(ssize_t dy = -1; dy <= 1; dy++)
     {
-      // Configure y fold
-
+      ssize_t x = molecule.mark.x() + dx;
       ssize_t y = molecule.mark.y() + dy;
+
+      int fold = vec :: direct;
+
+      if(x < 0)
+        fold |= vec :: right;
+      else if(x >= static_cast<ssize_t>(this->_grid.fineness()))
+        fold |= vec :: left;
 
       if(y < 0)
         fold |= vec :: up;
       else if(y >= static_cast<ssize_t>(this->_grid.fineness()))
         fold |= vec :: down;
 
+      x = (x + this->_grid.fineness()) % this->_grid.fineness();
       y = (y + this->_grid.fineness()) % this->_grid.fineness();
 
       // Molecule event
@@ -371,7 +378,6 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
           delete event;
       });
     }
-  }
 }
 
 void engine :: incref(molecule & molecule, const size_t &)
