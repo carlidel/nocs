@@ -15,6 +15,7 @@ class grid;
 #define __forward__
 #include "molecule/molecule.h"
 #include "elements/bumper.h"
+#include "elements/line.h"
 #undef __forward__
 
 // Includes
@@ -55,6 +56,7 @@ private:
 
   set <molecule *> ** _molecules;
   set <bumper *> ** _bumpers;
+  set <xline *> ** _xlines;
 
 public:
 
@@ -74,11 +76,13 @@ public:
 
   void add(molecule &);
   void add(bumper &);
+  void add(xline &);
   void remove(molecule &);
   void update(molecule &, const vec :: fold &);
 
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &); // TODO: Add validation for lambda
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &); // TODO: Add validation for lambda
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, xline> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &); // TODO: Add validation for lambda
 
 private:
 
@@ -86,6 +90,7 @@ private:
 
   void add(molecule &, const size_t &, const size_t &);
   void add(bumper &, const size_t &, const size_t &);
+  void add(xline &, const size_t &, const size_t &);
 };
 
 #endif

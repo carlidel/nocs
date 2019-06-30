@@ -1,6 +1,7 @@
 #include "engine.hpp"
 #include "event/events/molecule.h"
 #include "event/events/bumper.h"
+#include "event/events/line.h"
 #include "event/events/grid.h"
 
 // tag
@@ -200,6 +201,26 @@ void engine :: add(const bumper & bumper)
     }
 }
 
+void engine :: add(const xline & xline)
+{
+  class xline * entry = new class xline(xline);
+  this->_xlines.add(entry);
+
+  this->_grid.add(*entry);
+
+  for(ssize_t dx = -1; dx <= 1; dx++)
+    for(size_t y = 0; y < this->_grid.fineness(); y++) // xlines stay in y = 0 sectors
+    {
+      ssize_t x = (xline.mark.x() + this->_grid.fineness() + dx) % this->_grid.fineness();
+
+      this->_grid.each <class molecule> (x, y, [&](class molecule & molecule)
+      {
+        this->refresh(molecule);
+      });
+    }
+}
+
+
 void engine :: remove(const size_t & id)
 {
   molecule * entry = this->_molecules[id];
@@ -275,24 +296,46 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
     delete event;
 
   for(ssize_t dx = -1; dx <= 1; dx++)
+  {
+    // Configure x fold
+
+    ssize_t x = molecule.mark.x() + dx;
+
+    int fold = vec :: direct;
+
+    if(x < 0)
+      fold |= vec :: right;
+    else if(x >= static_cast<ssize_t>(this->_grid.fineness()))
+      fold |= vec :: left;
+
+    x = (x + this->_grid.fineness()) % this->_grid.fineness();
+      
+    // xline event
+
+    this->_grid.each <xline> (x, 0, [&](xline & xline)
+    {
+      events :: xline * event = new events :: xline(molecule, fold, xline);
+
+      if(event->happens())
+      {
+        event->each(this, &engine :: incref);
+        this->_events.push(event);
+      }
+      else
+        delete event;
+    });
+  
     for(ssize_t dy = -1; dy <= 1; dy++)
     {
-      ssize_t x = molecule.mark.x() + dx;
+      // Configure y fold
+
       ssize_t y = molecule.mark.y() + dy;
-
-      int fold = vec :: direct;
-
-      if(x < 0)
-        fold |= vec :: right;
-      else if(x >= static_cast<ssize_t>(this->_grid.fineness()))
-        fold |= vec :: left;
 
       if(y < 0)
         fold |= vec :: up;
       else if(y >= static_cast<ssize_t>(this->_grid.fineness()))
         fold |= vec :: down;
 
-      x = (x + this->_grid.fineness()) % this->_grid.fineness();
       y = (y + this->_grid.fineness()) % this->_grid.fineness();
 
       // Molecule event
@@ -328,6 +371,7 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
           delete event;
       });
     }
+  }
 }
 
 void engine :: incref(molecule & molecule, const size_t &)

@@ -84,6 +84,9 @@ namespace graphics
     sphere_buffer.clear();
     // Fill line_buffer 
     window :: grid(engine);
+    engine.each<xline>([&](const xline &xline) {
+      window :: list_lines(xline);
+    });
     // Fill sphere_buffer
     engine.each<molecule>([&](const molecule &molecule) {
       window :: list_sphere(molecule);
@@ -106,6 +109,9 @@ namespace graphics
     sphere_buffer.clear();
     // Fill line_buffer
     window :: grid(engine);
+    engine.each<xline>([&](const xline &xline) {
+      window :: list_lines(xline);
+    });
     // Fill sphere_buffer
     engine.each<molecule>(tag, [&](const molecule &molecule) {
       window :: list_sphere(molecule);
@@ -239,7 +245,7 @@ namespace graphics
     gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
 
     glBegin(GL_LINE_STRIP);
-    glColor3d(1.0, 0.0, 0.0);
+    glColor3d(l.c.red, l.c.green, l.c.blue);
     glVertex3d(GLdouble(l.beg.x), GLdouble(l.beg.y), GLdouble(0.));
     glVertex3d(GLdouble(l.end.x), GLdouble(l.end.y), GLdouble(0.));
     glEnd();
@@ -290,6 +296,11 @@ namespace graphics
     for (double dx : {1., 0., -1.})
       for (double dy : {1., 0., -1.})
         sphere_buffer.push_back(sphere({dx + bumper.position().x, dy + bumper.position().y}, bumper.radius(), {1, 0, 0}));
+  }
+
+  void window :: list_lines(const xline &xline)
+  {
+    line_buffer.push_back(line({xline.xposition(), 0.}, {xline.xposition(), 1.}, {0, 0, 0}));
   }
 
   void window :: grid(const engine &engine)
