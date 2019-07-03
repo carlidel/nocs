@@ -24,6 +24,7 @@ class xline
     double _temperature;
     bool _multiplicative;
     bool _randomness;
+    bool _x_only;
     std :: exponential_distribution <double> _exp_distribution;
     std :: default_random_engine * _random_engine;
 
@@ -32,7 +33,7 @@ public:
     // Constructors
 
     xline();
-    xline(const double &, const double & = -1.0, const bool & = false, const bool & = false, std :: default_random_engine * = NULL);
+    xline(const double &xpos, const double &temperature = -1.0, const bool &randomness = false, const bool &multiplicative = false, const bool &x_only=false, std :: default_random_engine *random_engine = NULL);
 
     // Public members
 
@@ -45,6 +46,7 @@ public:
     const double & temperature() const;
     const bool & multiplicative() const;
     const bool & randomness() const;
+    const bool & x_only() const;
 
     // Methods
     

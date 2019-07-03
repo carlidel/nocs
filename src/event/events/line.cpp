@@ -147,11 +147,30 @@ namespace events
     // Collision resolution
 
     // Simple case (1 atom molecule)
-    if(this->_molecule.molecule->size() == 1)
+    if(this->_molecule.molecule->size() == 1 && this->_xline->x_only())
     {
-      // Simple v.x inversion
-      double inversion_module = -2 * this->_molecule.molecule->mass() * this->_molecule.molecule->velocity().x;
-      this->_molecule.molecule->impulse(this->_molecule.molecule->position(), vec(inversion_module, 0.0));
+      bool sign = std :: signbit(this->_molecule.molecule->velocity().x);
+        if (this->_xline->temperature() != -1)
+      {  
+        if (this->_xline->randomness())
+        {
+          this->_molecule.molecule->velocity_manual_change(vec(this->_xline->random_extraction() * (sign ? 1 : -1),
+           this->_molecule.molecule->velocity().y));
+        }
+        else
+        {
+          if (this->_xline->multiplicative())
+          {
+            // NOW HERE WE ARE DEALING WITH THIS "TEMPERATURE" WHICH IS ACTUALLY A DIRTY ELASTICITY CONSTANT.
+            this->_molecule.molecule->velocity_manual_change(vec(this->_molecule.molecule->velocity().x * this->_xline->temperature() * (-1), this->_molecule.molecule->velocity().y));
+          }
+          else
+          {
+            this->_molecule.molecule->velocity_manual_change(vec(this->_xline->temperature() * (sign ? 1 : -1), this->_molecule.molecule->velocity().y));
+          }
+        }
+      }
+      return true;
     }
     else // Difficult case
     {
