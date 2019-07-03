@@ -81,6 +81,9 @@ public:
   void teleport(const vec :: fold &);
   void scale_energy(const double &);
 
+  // DESPICABLE METHOD!
+  void velocity_manual_change(const vec &);
+
   void disable();
 
   // Operators
