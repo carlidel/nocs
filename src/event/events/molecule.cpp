@@ -23,6 +23,45 @@ namespace events
 
     double time = std :: max(alpha.time(), beta.time());
 
+    if(alpha.size() == 1 && beta.size() == 1)
+    {
+      // SIMPLE CASE
+      vec c = xb - xa;
+      vec v = va - vb;
+
+      if (c * v <= 0)
+      {
+        this->_happens = false;
+        return;
+      }
+      double theta = acos((c * v) / ((!c) * (!v)));
+      double d_min = (!c) * sin(theta);
+      double L = (!c) * cos(theta);
+
+      if (d_min >= alpha.radius() + beta.radius())
+      {
+        this->_happens = false;
+        return;
+      }
+
+      double T = sqrt((alpha.radius() + beta.radius()) * (alpha.radius() + beta.radius()) - d_min * d_min);
+
+      this->_time = (L - T) / (!v) + time;
+      this->_alpha.atom = 0;
+      this->_beta.atom = 0;
+
+      this->_happens = true;
+      this->_alpha.molecule = &alpha;
+      this->_alpha.version = alpha.version();
+      this->_alpha.fold = fold;
+      this->_beta.molecule = &beta;
+      this->_beta.version = beta.version();
+
+      this->_elasticity = elasticity;
+
+      return;
+    }
+
     bool close;
     double beg = 0.;
     double end;
