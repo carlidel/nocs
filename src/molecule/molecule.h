@@ -24,10 +24,10 @@ class molecule
 
 public:
 
-	// Members
+  // Members
 
-	size_t _size;
-	atom * _atoms;
+  size_t _size;
+  atom * _atoms;
 
   vec _position;
   vec _velocity;
@@ -35,12 +35,12 @@ public:
   double _orientation;
   double _angular_velocity;
 
-	double _mass;
+  double _mass;
   double _radius;
-	double _inertia_moment;
+  double _inertia_moment;
 
-	double _time;
-	int32_t _version;
+  double _time;
+  int32_t _version;
 
 public:
 
@@ -49,45 +49,48 @@ public:
   grid :: mark mark;
   class engine :: tag tag;
 
-	// Constructors
+  // Constructors
 
-	molecule();
-	molecule(const std :: vector<atom> &, const vec & = vec(0, 0), const vec & = vec(0, 0), const double & = 0, const double & = 0);
-	molecule(const molecule &);
+  molecule();
+  molecule(const std :: vector<atom> &, const vec & = vec(0, 0), const vec & = vec(0, 0), const double & = 0, const double & = 0);
+  molecule(const molecule &);
 
-	// Destructor
+  // Destructor
 
-	~molecule();
+  ~molecule();
 
-	// Getters
+  // Getters
 
-	const size_t & size() const;
+  const size_t & size() const;
   const vec & position() const;
-	const vec & velocity() const;
-	const double & orientation() const;
-	const double & angular_velocity() const;
-	const double & radius() const;
-	const double & mass() const;
-	const double & inertia_moment() const;
-	const double & time() const;
-	const int32_t & version() const;
+  const vec & velocity() const;
+  const double & orientation() const;
+  const double & angular_velocity() const;
+  const double & radius() const;
+  const double & mass() const;
+  const double & inertia_moment() const;
+  const double & time() const;
+  const int32_t & version() const;
 
-	double energy() const;
+  double energy() const;
 
-	// Methods
+  // Methods
 
   void integrate(const double &);
-	void impulse(const vec &, const vec &);
-	void teleport(const vec :: fold &);
+  void impulse(const vec &, const vec &);
+  void teleport(const vec :: fold &);
   void scale_energy(const double &);
+
+  // DESPICABLE METHOD!
+  void velocity_manual_change(const vec &);
 
   void disable();
 
-	// Operators
+  // Operators
 
-	const atom & operator [] (const size_t &) const;
-	molecule & operator ++ ();
-	molecule operator ++ (int);
+  const atom & operator [] (const size_t &) const;
+  molecule & operator ++ ();
+  molecule operator ++ (int);
 };
 
 #endif

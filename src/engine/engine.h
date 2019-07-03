@@ -22,6 +22,7 @@ class engine;
 #define __forward__
 #include "molecule/molecule.h"
 #include "elements/bumper.h"
+#include "elements/line.h"
 #undef __forward__
 
 // Includes
@@ -109,6 +110,7 @@ private:
 
   hashtable <size_t, molecule *> _molecules;
   set <bumper *> _bumpers;
+  set <xline *> _xlines;
 
   hashtable <size_t, molecule *> * _tags;
   set <molecule *> _garbage;
@@ -153,6 +155,7 @@ public:
 
   size_t add(const molecule &);
   void add(const bumper &);
+  void add(const xline &);
 
   void remove(const size_t &);
 
@@ -166,11 +169,14 @@ public:
 
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
 
-  template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const lambda &); // TODO: Add validation for lambda
-  template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const uint8_t &, const lambda &); // TODO: Add validation for lambda
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, xline> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
+
+  template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value || std :: is_same <etype, events :: xline> :: value> :: type * = nullptr> size_t on(const lambda &); // TODO: Add validation for lambda
+  template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value || std :: is_same <etype, events :: xline> :: value> :: type * = nullptr> size_t on(const uint8_t &, const lambda &); // TODO: Add validation for lambda
+  
   template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value> :: type * = nullptr> size_t on(const uint8_t &, const uint8_t &, const lambda &); // TODO: Add validation for lambda
 
-  template <typename etype, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> void unsubscribe(const size_t &);
+  template <typename etype, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value || std :: is_same <etype, events :: xline> :: value> :: type * = nullptr> void unsubscribe(const size_t &);
 
 private:
 

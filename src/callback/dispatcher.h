@@ -14,6 +14,7 @@ class dispatcher;
 
 #include "callbacks/molecule.hpp"
 #include "callbacks/bumper.hpp"
+#include "callbacks/line.hpp"
 #include "data/hashtable.hpp"
 #include "data/set.hpp"
 
@@ -55,6 +56,18 @@ class dispatcher
     } stag;
   } _bumper;
 
+  struct
+  {
+    hashtable <size_t, type> types;
+    hashtable <size_t, callback <events :: xline> *> all;
+
+    struct
+    {
+      hashtable <size_t, std :: tuple <callback <events :: xline> *, uint8_t>> handles;
+      set <callback <events :: xline> *> map[255];
+    } stag;
+  } _xline;
+
 public:
 
   // Methods
@@ -66,8 +79,12 @@ public:
   size_t add(callback <events :: bumper> *);
   size_t add(callback <events :: bumper> *, const uint8_t &);
 
+  size_t add(callback <events :: xline> *);
+  size_t add(callback <events :: xline> *, const uint8_t &);
+
   void trigger(const events :: molecule &);
   void trigger(const events :: bumper &);
+  void trigger(const events :: xline &);
 
   template <typename etype> void remove(const size_t &);
 

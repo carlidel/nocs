@@ -1,6 +1,7 @@
 #include "dispatcher.h"
 #include "event/events/molecule.h"
 #include "event/events/bumper.h"
+#include "event/events/line.h"
 
 // Methods
 
@@ -56,6 +57,27 @@ size_t dispatcher :: add(callback <events :: bumper> * event, const uint8_t & ta
     this->_bumper.types.add(id, stag);
     this->_bumper.stag.handles.add(id, std :: tuple <callback <events :: bumper> *, uint8_t> (event, tag));
     this->_bumper.stag.map[tag].add(event);
+
+    return id;
+}
+
+size_t dispatcher :: add(callback <events :: xline> * event)
+{
+  size_t id = autoincrement++;
+
+  this->_xline.types.add(id, all);
+  this->_xline.all.add(id, event);
+
+  return id;
+}
+
+size_t dispatcher :: add(callback <events :: xline> * event, const uint8_t & tag)
+{
+    size_t id = autoincrement++;
+
+    this->_xline.types.add(id, stag);
+    this->_xline.stag.handles.add(id, std :: tuple <callback <events :: xline> *, uint8_t> (event, tag));
+    this->_xline.stag.map[tag].add(event);
 
     return id;
 }
@@ -122,6 +144,25 @@ void dispatcher :: trigger(const events :: bumper & event)
   }
 }
 
+void dispatcher :: trigger(const events :: xline & event)
+{
+  auto trigger = [&](callback <events :: xline> * callback)
+  {
+    callback->trigger(event);
+  };
+
+  this->_xline.all.each(trigger);
+
+  bool striggered[255];
+  memset(striggered, '\0', 255 * sizeof(bool));
+
+  for(size_t i = 0; i < event.molecule().tag.size(); i++)
+  {
+    striggered[event.molecule().tag[i]] = true;
+    this->_xline.stag.map[event.molecule().tag[i]].each(trigger);
+  }
+}
+
 template <> void dispatcher :: remove <events :: molecule> (const size_t & id)
 {
   switch(this->_molecule.types[id])
@@ -170,6 +211,30 @@ template <> void dispatcher :: remove <events :: bumper> (const size_t & id)
 
       this->_bumper.stag.handles.remove(id);
       this->_bumper.stag.map[std :: get <1> (handle)].remove(std :: get <0> (handle));
+
+      break;
+    }
+    default:
+    {
+    }
+  }
+}
+
+template <> void dispatcher :: remove <events :: xline> (const size_t & id)
+{
+  switch(this->_xline.types[id])
+  {
+    case all:
+    {
+      this->_xline.all.remove(id);
+      break;
+    }
+    case stag:
+    {
+      auto handle = this->_xline.stag.handles[id];
+
+      this->_xline.stag.handles.remove(id);
+      this->_xline.stag.map[std :: get <1> (handle)].remove(std :: get <0> (handle));
 
       break;
     }

@@ -131,6 +131,12 @@ void molecule :: scale_energy(const double & target)
   this->_angular_velocity *= ratio;
 }
 
+void molecule :: velocity_manual_change(const vec & target)
+{
+	assert(this->size() == 1 && "No, I will not allow this!");
+	this->_velocity = target;
+}
+
 void molecule :: disable()
 {
   this->_version = -1;

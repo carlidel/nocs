@@ -1,6 +1,7 @@
 #include "grid.hpp"
 #include "molecule/molecule.h"
 #include "elements/bumper.h"
+#include "elements/line.h"
 
 // Nested classes
 
@@ -33,6 +34,11 @@ grid :: grid(const size_t & fineness) : _fineness(fineness)
 
   for(size_t i = 0; i < this->_fineness; i++)
     this->_bumpers[i] = new set <bumper *> [this->_fineness];
+
+  this->_xlines = new set <xline *> * [this->_fineness];
+
+  for(size_t i = 0; i < this->_fineness; i++)
+    this->_xlines[i] = new set <xline *> [this->_fineness];
 }
 
 // Destructor
@@ -40,9 +46,14 @@ grid :: grid(const size_t & fineness) : _fineness(fineness)
 grid :: ~grid()
 {
   for(size_t i = 0; i < this->_fineness; i++)
+  {
     delete [] this->_molecules[i];
-
+    delete [] this->_bumpers[i];
+    delete [] this->_xlines[i];
+  }
   delete [] this->_molecules;
+  delete [] this->_bumpers;
+  delete [] this->_xlines;
 }
 
 // Getters
@@ -62,6 +73,13 @@ void grid :: add(molecule & molecule)
 void grid :: add(bumper & bumper)
 {
   this->add(bumper, (size_t) (bumper.position().x * this->_fineness), (size_t) (bumper.position().y * this->_fineness));
+}
+
+void grid :: add(xline & xline)
+{
+  // xlines by default occupy the grid in the y-zero-sector.
+  // from this, everything is consequent in the refresh() method in the engine.
+  this->add(xline, (size_t) (xline.xposition() * this->_fineness), (size_t) 0);
 }
 
 void grid :: remove(molecule & molecule)
@@ -130,4 +148,12 @@ void grid :: add(bumper & bumper, const size_t & x, const size_t & y)
   bumper.mark._y = y;
 
   this->_bumpers[bumper.mark._x][bumper.mark._y].add(&bumper);
+}
+
+void grid :: add(xline & xline, const size_t & x, const size_t & y)
+{
+  xline.mark._x = x;
+  xline.mark._y = y;
+
+  this->_xlines[xline.mark._x][xline.mark._y].add(&xline);
 }

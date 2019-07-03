@@ -32,13 +32,21 @@ template <typename type, typename lambda, typename std :: enable_if <std :: is_s
   });
 }
 
-template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type *> size_t engine :: on(const lambda & callback)
+template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, xline> :: value> :: type *> void engine :: each(const lambda & callback) const
+{
+  this->_xlines.each([&](xline * xline)
+  {
+    callback((const class xline &) (*xline));
+  });
+}
+
+template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value || std :: is_same <etype, events :: xline> :: value> :: type *> size_t engine :: on(const lambda & callback)
 {
   :: callback <etype> * wrapper = new :: callback <etype, lambda> (callback);
   return this->_dispatcher.add(wrapper);
 }
 
-template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type *> size_t engine :: on(const uint8_t & tag, const lambda & callback)
+template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value || std :: is_same <etype, events :: xline> :: value> :: type *> size_t engine :: on(const uint8_t & tag, const lambda & callback)
 {
   :: callback <etype> * wrapper = new :: callback <etype, lambda> (callback);
   return this->_dispatcher.add(wrapper, tag);
@@ -50,7 +58,7 @@ template <typename etype, typename lambda, typename std :: enable_if <std :: is_
   return this->_dispatcher.add(wrapper, alpha, beta);
 }
 
-template <typename etype, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type *> void engine :: unsubscribe(const size_t & id)
+template <typename etype, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value || std :: is_same <etype, events :: xline> :: value> :: type *> void engine :: unsubscribe(const size_t & id)
 {
   this->_dispatcher.remove <etype> (id);
 }

@@ -36,6 +36,7 @@
 #include "engine/engine.hpp"
 #include "molecule/molecule.h"
 #include "elements/bumper.h"
+#include "elements/line.h"
 
 #ifdef _MSC_VER
   #ifndef __unused
@@ -141,6 +142,7 @@ namespace graphics
 
     static void list_sphere(const molecule &);
     static void list_sphere(const bumper &);
+    static void list_lines(const xline &);
     static void grid(const engine &);
   };
 

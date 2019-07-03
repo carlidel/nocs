@@ -21,4 +21,13 @@ template <typename type, typename lambda, typename std :: enable_if <std :: is_s
   });
 }
 
+
+template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, xline> :: value> :: type *> void grid :: each(const size_t & x, const size_t & y, const lambda & callback)
+{
+  this->_xlines[x][y].each([&](xline * xline)
+  {
+    callback(*xline);
+  });
+}
+
 #endif
