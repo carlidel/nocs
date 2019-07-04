@@ -29,14 +29,11 @@ const double HOT_TEMPERATURE = 2.0;
 const double COLD_TEMPERATURE = 1.0;
 
 // CASO RANDOM
-const bool RANDOM_XLINES = false; // ci sono bumpers con distribuzione randomica delle velocità x generate alle varie diverse collisioni?
-/* NELLA DISTRIBUZIONE ESPONENZIALE IN C++ SI IMPOSTA
-   IL VALORE DI LAMBDA SECONDO LA FORMULA
-   f(x) = \lambda \exp(- \lambda x)
-   QUESTI DUE PARAMETRI k1 k2 SOTTO PERò VERRANNO PASSATI IN FORMA
-   \lambda1 = (1 / k1)
-   \lambda2 = (1 / k2)
-   Così maggiore valore indica maggiore velocità media nella distribuzione*/
+const bool RANDOM_XLINES = true; // ci sono xlines con distribuzione randomica delle velocità x generate alle varie diverse collisioni?
+/* Impostato tutto secondo distribuzione:
+pdf(vx)=vx * (m/T)* exp[-m*(vx**2)/(2T)],
+calcolato con semplificazione:
+vx=sqrt(-log(P)*2T/m) con P random classico fra zero e uno.*/
 const double HOT_DISTRIBUTION = 10.0;
 const double COLD_DISTRIBUTION = 1.0;
 
@@ -121,16 +118,16 @@ int main()
         }
         else if (RANDOM_XLINES)
         {
-            bumper cold_line(
+            xline cold_line(
                 0.0001, // coodinata x sinistra
-                1 / COLD_DISTRIBUTION,
+                COLD_DISTRIBUTION,
                 true,
                 false,
                 LOCKED_Y_VELOCITY,
                 &re);
-            bumper hot_line(
+            xline hot_line(
                 0.9999, // coordinata x destra
-                1 / HOT_DISTRIBUTION,
+                HOT_DISTRIBUTION,
                 true,
                 false,
                 LOCKED_Y_VELOCITY,
@@ -140,15 +137,15 @@ int main()
         }
         else if (MULTIPLICATIVE_XLINES)
         {
-            bumper cold_line(
+            xline cold_line(
                 0.0001, // coodinata x sinistra
-                1 / COLD_DISTRIBUTION,
+                COLD_ELASTICITY,
                 false,
                 true,
                 LOCKED_Y_VELOCITY);
-            bumper hot_line(
+            xline hot_line(
                 0.9999, // coordinata x destra
-                1 / HOT_DISTRIBUTION,
+                HOT_ELASTICITY,
                 false,
                 true,
                 LOCKED_Y_VELOCITY);
@@ -274,9 +271,9 @@ int main()
             }
         });
 
-    my_engine.on<events ::bumper>(
+    my_engine.on<events :: xline>(
         traced,
-        [&](const report<events ::bumper> my_report) {
+        [&](const report<events :: xline> my_report) {
             if (my_report.time() >= TIME_TRACING_SKIP)
             {
                 out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
@@ -287,7 +284,7 @@ int main()
                            << std ::fixed << std::setprecision(8) << my_report.position().y << "\t"
                            << std ::fixed << std::setprecision(8) << my_report.velocity.after().x << "\t"
                            << std ::fixed << std::setprecision(8) << my_report.velocity.after().y << "\t"
-                           << "bumper-molecule" << std::endl;
+                           << "xline-molecule" << std::endl;
             }
         });
 
