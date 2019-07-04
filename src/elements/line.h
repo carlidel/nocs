@@ -26,6 +26,7 @@ class xline
     bool _randomness;
     bool _x_only;
     std :: exponential_distribution <double> _exp_distribution;
+    std :: uniform_real_distribution <double> _unif_distribution;
     std :: default_random_engine * _random_engine;
 
 public:
@@ -50,7 +51,8 @@ public:
 
     // Methods
     
-    double random_extraction();
+    double exp_random_extraction();
+    double unif_random_extraction();
 };
 
 #endif

@@ -19,6 +19,7 @@ xline ::xline(const double &xpos, const double &temperature, const bool &randomn
     if (this->_temperature != -1.0 && this->_randomness)
     {
         this->_exp_distribution = std :: exponential_distribution<double>(this->_temperature);
+        this->_unif_distribution = std :: uniform_real_distribution<double> (0.0, 1.0);
     }
 }
 
@@ -51,8 +52,14 @@ const bool & xline :: x_only() const
 
 // Methods
 
-double xline :: random_extraction()
+double xline :: exp_random_extraction()
 {
     assert(this->_randomness && "xline is NOT random!");
     return this->_exp_distribution(*(this->_random_engine));
+}
+
+double xline :: unif_random_extraction()
+{
+    assert(this->_randomness && "xline is NOT random!");
+    return this->_unif_distribution(*(this->_random_engine));
 }

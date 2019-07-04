@@ -154,7 +154,9 @@ namespace events
       {  
         if (this->_xline->randomness())
         {
-          this->_molecule.molecule->velocity_manual_change(vec(this->_xline->random_extraction() * (sign ? 1 : -1),
+          double xv = sqrt(-log(_xline->unif_random_extraction()) * 2 * _xline->temperature() / this->_molecule.molecule->mass());
+          //std::cout<<xv<<std::endl;
+          this->_molecule.molecule->velocity_manual_change(vec(xv * (sign ? 1 : -1),
            this->_molecule.molecule->velocity().y));
         }
         else
@@ -201,7 +203,7 @@ namespace events
     {
       if (this->_xline->randomness())
       {
-        this->_molecule.molecule->scale_energy(this->_xline->random_extraction());
+        this->_molecule.molecule->scale_energy(this->_xline->exp_random_extraction());
       }
       else
       {
