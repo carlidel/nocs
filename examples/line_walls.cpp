@@ -11,6 +11,7 @@
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
+#include "utils/tqdm.h"
 
 // Parametri:
 
@@ -299,10 +300,14 @@ int main()
 
     double time_interval = SIMULATION_TIME / N_SAMPLES;
 
+    tqdm bar;
+
     for (unsigned int i = 0; i <= N_SAMPLES; ++i)
     {
         my_engine.run(i * time_interval); // Run UNTIL time
-
+        
+        bar.progress(i, N_SAMPLES);
+        
         // Report di ogni molecola sul file di testo...
         my_engine.each<molecule>([&](const molecule &current_molecule) {
             out_all << std ::fixed << std ::setprecision(2) << i * time_interval << "\t"
