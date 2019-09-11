@@ -110,6 +110,17 @@ void molecule :: integrate(const double & time)
   this->_orientation += fmod(this->_angular_velocity * (time - this->_time), 2. * M_PI);
 
   this->_time = time;
+
+  // HORRIBLE HORRIBLE HORRIBLE SHAMEFUL HOTFIX FOR APPROXIMATION PROBLEM
+  if(this->_position.x > 1.0)
+    this->_position.x = 1.0 - std::numeric_limits<double>::epsilon();
+  if(this->_position.y > 1.0)
+    this->_position.y = 1.0 - std::numeric_limits<double>::epsilon();
+  if(this->_position.x < 0.0)
+    this->_position.x = 0.0 + std::numeric_limits<double>::epsilon();
+  if(this->_position.y < 0.0)
+    this->_position.y = 0.0 + std::numeric_limits<double>::epsilon();
+  // END OF THE HORRIBLE HORRIBLE HOTFIX
 }
 
 void molecule :: impulse(const vec & position, const vec & impulse)
@@ -121,6 +132,17 @@ void molecule :: impulse(const vec & position, const vec & impulse)
 void molecule :: teleport(const vec :: fold & fold)
 {
   this->_position += vec(fold);
+
+  // HORRIBLE HORRIBLE HORRIBLE SHAMEFUL HOTFIX FOR APPROXIMATION PROBLEM
+  if(this->_position.x > 1.0)
+    this->_position.x = 1.0 - std::numeric_limits<double>::epsilon();
+  if(this->_position.y > 1.0)
+    this->_position.y = 1.0 - std::numeric_limits<double>::epsilon();
+  if(this->_position.x < 0.0)
+    this->_position.x = 0.0 + std::numeric_limits<double>::epsilon();
+  if(this->_position.y < 0.0)
+    this->_position.y = 0.0 + std::numeric_limits<double>::epsilon();
+  // END OF THE HORRIBLE HORRIBLE HOTFIX*/
 }
 
 void molecule :: scale_energy(const double & target)
