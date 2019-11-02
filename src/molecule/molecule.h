@@ -11,6 +11,8 @@ class molecule;
 #include <cmath>
 #include <vector>
 #include <algorithm> // allow min in MSVC
+#include <assert.h>
+#include <type_traits>
 
 // Includes
 
