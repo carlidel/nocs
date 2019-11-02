@@ -184,6 +184,7 @@ private:
 
   double elasticity(const molecule &, const molecule &);
 
+  void check_position(molecule &);
   void refresh(molecule &, const size_t & = 0);
 
   void incref(molecule &, const size_t &);

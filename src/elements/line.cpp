@@ -13,8 +13,6 @@ xline ::xline(const double &xpos, const double &temperature, const bool &randomn
     assert(!(this->_randomness && this->_temperature != -1.0) && "Temperature not valid for random xline!");
     assert(!(this->_multiplicative && this->_temperature != -1.0) && "Temperature not valid for multiplicative xline!");
     assert(!(this->_randomness && this->_random_engine == NULL) && "pointer to std::default_random_engine unspecified for random bumper");
-    assert((this->_x_only && (this->_randomness || this->_multiplicative)) && "An x_only coordinate x line must be or random or multiplicative");
-
 
     if (this->_temperature != -1.0 && this->_randomness)
     {

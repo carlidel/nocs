@@ -3,6 +3,15 @@
 #include "elements/bumper.h"
 #include "elements/line.h"
 
+void my_in_assert(bool element)
+{
+  if (!element)
+  {
+    std::cout << "GRID ASSERT VIOLATED!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
 // Nested classes
 
 // mark
@@ -89,47 +98,58 @@ void grid :: remove(molecule & molecule)
 
 void grid :: update(molecule & molecule, const vec :: fold & fold)
 {
+  //std::cout << "before: " << molecule.mark.x() << " " << molecule.mark.y() << std::endl;
+  bool flag;
+
   this->remove(molecule);
 
   vec :: fold teleport = vec :: direct;
 
-  size_t x = molecule.mark.x();
-  size_t y = molecule.mark.y();
-
-  switch (fold)
+  do
   {
-    case vec :: left:
+    flag = true;
+    if (molecule.position().x < 0)
     {
-      x = (this->_fineness + x - 1) % this->_fineness;
-      if(x == this->_fineness - 1) teleport = vec :: right;
-      break;
-    }
-    case vec :: right:
+      teleport = vec :: right;
+      molecule.teleport(teleport);
+      teleport = vec :: direct;
+    } else if (molecule.position().x >= 1)
     {
-      x = (x + 1) % this->_fineness;
-      if(x == 0) teleport = vec :: left;
-      break;
+      teleport = vec :: left;
+      molecule.teleport(teleport);
+      teleport = vec :: direct;
     }
-    case vec :: up:
+    else
+      flag = false;
+  } while(flag);
+
+  do
+  {
+    flag = true;
+    if (molecule.position().y < 0)
     {
-      y = (y + 1) % this->_fineness;
-      if(y == 0) teleport = vec :: down;
-      break;
-    }
-    case vec :: down:
+      teleport = vec :: up;
+      molecule.teleport(teleport);
+      teleport = vec ::direct;
+    } else if (molecule.position().y >= 1)
     {
-      y = (this->_fineness + y - 1) % this->_fineness;
-      if(y == this->_fineness - 1) teleport = vec :: up;
-      break;
+      teleport = vec :: down;
+      molecule.teleport(teleport);
+      teleport = vec ::direct;
     }
-    case vec :: direct:
-    case vec :: horizontal:
-    case vec :: vertical:
-    break;
+    else
+      flag = false;
+  } while(flag);
+
+  if(!((size_t)trunc(molecule.position().x * this->_fineness) < this->_fineness && (size_t)trunc(molecule.position().y * this->_fineness) < this->_fineness))
+  {
+    std::cout << molecule.position().x << " " << molecule.position().y << std::endl;
+    exit(0);
   }
 
-  molecule.teleport(teleport);
-  this->add(molecule, x, y);
+  this->add(molecule, trunc(molecule.position().x * this->_fineness), trunc(molecule.position().y * this->_fineness));
+
+  //std::cout << "after: " << molecule.mark.x() << " " << molecule.mark.y() << std::endl;
 }
 
 // Private Methods

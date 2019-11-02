@@ -9,6 +9,7 @@ namespace events
   molecule :: molecule(:: molecule & alpha, const int & fold, :: molecule & beta, const double & elasticity)
   {
     vec xa = alpha.position() + vec(fold);
+
     vec xb = beta.position();
 
     vec va = alpha.velocity();
@@ -34,7 +35,7 @@ namespace events
         this->_happens = false;
         return;
       }
-      double theta = acos((c * v) / ((!c) * (!v)));
+      double theta = acos(std::min(1.0, (c * v) / ((!c) * (!v))));
       double d_min = (!c) * sin(theta);
       double L = (!c) * cos(theta);
 
@@ -45,7 +46,17 @@ namespace events
       }
 
       double T = sqrt((alpha.radius() + beta.radius()) * (alpha.radius() + beta.radius()) - d_min * d_min);
-
+      if(isnan((L - T) / (!v) + time))
+      {
+        std::cout << 
+        (alpha.position() + vec(fold)).x << ";" << (alpha.position() + vec(fold)).y << "\t" <<
+        beta.position().x << ";" << beta.position().y << "\n" <<
+        alpha.velocity().x << ";" << alpha.velocity().y << "\t" <<
+        beta.velocity().x << ";" << beta.velocity().y << "\n" <<
+        alpha.time() << "\t" <<
+        beta.time() << std::endl;
+        exit(0);
+      }
       this->_time = (L - T) / (!v) + time;
       this->_alpha.atom = 0;
       this->_beta.atom = 0;

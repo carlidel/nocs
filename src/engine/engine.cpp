@@ -264,6 +264,11 @@ void engine :: run(const double & time)
   if(time > this->_time)
     this->_time = time;
 
+  this->_molecules.each([&](molecule *molecule) {
+    molecule->integrate(this->_time);
+    this->check_position(*molecule);
+  });
+
   this->collect();
 }
 
@@ -281,11 +286,28 @@ double engine :: elasticity(const molecule & alpha, const molecule & beta)
     return this->_elasticity.all;
 }
 
+void engine :: check_position(molecule & molecule)
+{
+  // Is the particle in the correct location? If not, fix it!
+  double step = 1. / this->_grid.fineness();
+  if (!(molecule.position().x >= step * molecule.mark.x() && molecule.position().y >= step * molecule.mark.y() && molecule.position().x <= step * (molecule.mark.x() + 1) && molecule.position().y <= step * (molecule.mark.y() + 1)))
+  {
+    this->_grid.update(molecule, vec ::direct);
+  }
+}
+
 void engine :: refresh(molecule & molecule, const size_t & skip)
 {
+  check_position(molecule);
   // Grid event
 
   events :: grid * event = new events :: grid(molecule, this->_grid);
+  
+  if (isnan(event->time()))
+  {
+    std::cout << "GRID NAN!" << std::endl;
+    exit(0);
+  }
 
   if(event->happens())
   {
@@ -314,6 +336,11 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
     {
       events :: xline * event = new events :: xline(molecule, fold, xline);
 
+      if (isnan(event->time()))
+      {
+        std::cout << "XLINE NAN!" << std::endl;
+        exit(0);
+      }
       if(event->happens())
       {
         event->each(this, &engine :: incref);
@@ -354,6 +381,11 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
 
         events :: molecule * event = new events :: molecule(molecule, fold, beta, this->elasticity(molecule, beta));
 
+        if (isnan(event->time()))
+        {
+          std::cout << "MOLECULE NAN!" << std::endl;
+          exit(0);
+        }
         if(event->happens())
         {
           event->each(this, &engine :: incref);

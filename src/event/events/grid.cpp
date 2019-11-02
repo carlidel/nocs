@@ -9,9 +9,17 @@ namespace events
   {
     //double time = molecule.time();
     double step = 1. / grid.fineness();
+    double contour = step * 0.01;
 
-    double time_x = (step * (molecule.mark.x() + (size_t)(molecule.velocity().x >= 0)) - molecule.position().x) / molecule.velocity().x;
-    double time_y = (step * (molecule.mark.y() + (size_t)(molecule.velocity().y >= 0)) - molecule.position().y) / molecule.velocity().y;
+    if(!(molecule.position().x >= step * molecule.mark.x() && molecule.position().y >= step * molecule.mark.y() && molecule.position().x <= step * (molecule.mark.x() + 1) && molecule.position().y <= step * (molecule.mark.y() + 1)))
+    {
+      std::cout << step * molecule.mark.x() << "\t" << molecule.position().x << "\t" << step * (molecule.mark.x() + 1) << "\n";
+      std::cout << step * molecule.mark.y() << "\t" << molecule.position().y << "\t" << step * (molecule.mark.y() + 1) << "\n";
+      exit(EXIT_FAILURE);
+    }
+
+    double time_x = (step * (molecule.mark.x() + (size_t)(molecule.velocity().x >= 0)) + (contour * (molecule.velocity().x >= 0 ? 1 : -1)) - molecule.position().x) / molecule.velocity().x;
+    double time_y = (step * (molecule.mark.y() + (size_t)(molecule.velocity().y >= 0)) + (contour * (molecule.velocity().y >= 0 ? 1 : -1)) - molecule.position().y) / molecule.velocity().y;
 
     if(!std :: isfinite(time_x)) time_x = std :: numeric_limits <double> :: infinity();
     if(!std :: isfinite(time_y)) time_y = std :: numeric_limits <double> :: infinity();
