@@ -153,13 +153,14 @@ public:
         return my_molecule_id;
     }
     
-    std::vector<std::tuple<double, double, double, double, double, double>> get_sim_photo()
+    std::vector<std::tuple<double, double, double, double, double, double, double>> get_sim_photo()
     {
-        std::vector<std::tuple<double, double, double, double, double, double>> data_vec;
+        std::vector<std::tuple<double, double, double, double, double, double, double>> data_vec;
 
         my_engine.each<molecule>([&](const molecule &current_molecule) {
-            data_vec.push_back(std::tuple<double, double, double, double, double, double>(
+            data_vec.push_back(std::tuple<double, double, double,  double, double, double, double>(
                 current_molecule.mass(),
+                current_molecule.radius(),
                 current_molecule.energy(),
                 current_molecule.position().x,
                 current_molecule.position().y,
