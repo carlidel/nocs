@@ -190,6 +190,13 @@ target_link_libraries(Test ${linked_libs} ${nocslib})
 target_compile_definitions(Test PRIVATE __test__)
 add_dependencies(Testing Test)
 
+# python module
+add_subdirectory(pybind11)
+pybind11_add_module(engine_wrapper src/bindings.cpp)
+target_link_libraries(engine_wrapper PRIVATE ${linked_libs} ${nocslib})
+target_compile_definitions(engine_wrapper PRIVATE __binding__)
+add_dependencies(exec engine_wrapper)
+
 #################################################################
 #                          INSTALLERS                           #
 #################################################################
