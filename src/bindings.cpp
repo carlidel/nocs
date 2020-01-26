@@ -2,6 +2,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 namespace py = pybind11;
 
 #include <tuple>
@@ -26,7 +27,7 @@ class engine_wrapper
 
     std::vector<size_t> ids;
 
-    std::vector<std::tuple<unsigned int, double, double, double, double, double, double>> tracking;
+    std::vector<std::tuple<unsigned int, double, double, double, double, double, double, double>> tracking;
 
 public:
 
@@ -42,8 +43,9 @@ public:
             [&](const report<events ::molecule> my_report) {
                 if (std ::find(ids.begin(), ids.end(), my_report.alpha.id()) != ids.end())
                 {
-                    std::tuple<unsigned int, double, double, double, double, double, double> data(
+                    std::tuple<unsigned int, double, double, double, double, double, double, double> data(
                         my_report.alpha.id(),
+                        my_report.time(),
                         my_report.alpha.mass(),
                         my_report.alpha.energy.after(),
                         my_report.alpha.position().x,
@@ -54,8 +56,9 @@ public:
                 }
                 if (std ::find(ids.begin(), ids.end(), my_report.beta.id()) != ids.end())
                 {
-                    std::tuple<unsigned int, double, double, double, double, double, double> data(
+                    std::tuple<unsigned int, double, double, double, double, double, double, double> data(
                         my_report.beta.id(),
+                        my_report.time(),
                         my_report.beta.mass(),
                         my_report.beta.energy.after(),
                         my_report.beta.position().x,
@@ -69,8 +72,9 @@ public:
         my_engine.on<events ::xline>(
             traced1,
             [&](const report<events ::xline> my_report) {
-                std::tuple<unsigned int, double, double, double, double, double, double> data(
+                std::tuple<unsigned int, double, double, double, double, double, double, double> data(
                     my_report.id(),
+                    my_report.time(),
                     my_report.mass(),
                     my_report.energy.after(),
                     my_report.position().x,
@@ -132,7 +136,7 @@ public:
 
         for(int i = 0; i < x_atom.size(); i++)
         {
-            atoms.push_back(atom({x_atom[i], y_atom[i]}, r_atom[i], mass_atom[i]));
+            atoms.push_back(atom({x_atom[i], y_atom[i]}, mass_atom[i], r_atom[i]));
         }
 
         molecule my_molecule(
@@ -172,7 +176,7 @@ public:
         return data_vec;
     }
 
-    std::vector<std::tuple<unsigned int, double, double, double, double, double, double>> get_tracking_data()
+    std::vector<std::tuple<unsigned int, double, double, double, double, double, double, double>> get_tracking_data()
     {
         return tracking;
     }

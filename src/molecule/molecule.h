@@ -78,6 +78,7 @@ public:
 
   // Methods
 
+  void set_time(const double &);
   void integrate(const double &);
   void impulse(const vec &, const vec &);
   void teleport(const vec :: fold &);

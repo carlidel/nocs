@@ -173,6 +173,9 @@ void engine :: elasticity(const uint8_t & alpha, const uint8_t & beta, const dou
 size_t engine :: add(const molecule & molecule)
 {
   class molecule * entry = new class molecule(molecule);
+  
+  entry->set_time(this->_time);
+  
   this->_molecules.add(entry->tag.id(), entry);
 
   this->_grid.add(*entry);
@@ -302,10 +305,10 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
   // Grid event
 
   events :: grid * event = new events :: grid(molecule, this->_grid);
-  
-  if (isnan(event->time()))
+
+  if (isnan(event->time()) && event->happens())
   {
-    std::cout << "GRID NAN!" << std::endl;
+    std::cout << "MOLECULE NAN!!" << std::endl;
     exit(0);
   }
 
@@ -336,7 +339,7 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
     {
       events :: xline * event = new events :: xline(molecule, fold, xline);
 
-      if (isnan(event->time()))
+      if (isnan(event->time()) && event->happens())
       {
         std::cout << "XLINE NAN!" << std::endl;
         exit(0);
@@ -381,7 +384,7 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
 
         events :: molecule * event = new events :: molecule(molecule, fold, beta, this->elasticity(molecule, beta));
 
-        if (isnan(event->time()))
+        if (isnan(event->time()) && event->happens())
         {
           std::cout << "MOLECULE NAN!" << std::endl;
           exit(0);

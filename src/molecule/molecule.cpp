@@ -104,12 +104,20 @@ double molecule :: energy() const
 
 // Methods
 
+void molecule :: set_time(const double & time)
+{
+	this->_time = time;
+}
+
 void molecule :: integrate(const double & time)
 {
-  this->_position += this->_velocity * (time - this->_time);
-  this->_orientation += fmod(this->_angular_velocity * (time - this->_time), 2. * M_PI);
+	if(this->_time < time)
+  {
+    this->_position += this->_velocity * (time - this->_time);
+    this->_orientation += fmod(this->_angular_velocity * (time - this->_time), 2. * M_PI);
 
-  this->_time = time;
+    this->_time = time;
+  }
 }
 
 void molecule :: impulse(const vec & position, const vec & impulse)
