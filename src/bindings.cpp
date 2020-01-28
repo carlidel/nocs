@@ -27,7 +27,7 @@ class engine_wrapper
 
     std::vector<size_t> ids;
 
-    std::vector<std::tuple<unsigned int, double, double, double, double, double, double, double>> tracking;
+    std::vector<std::tuple<unsigned int, std::string, double, double, double, double, double, double, double>> tracking;
 
 public:
 
@@ -43,8 +43,9 @@ public:
             [&](const report<events ::molecule> my_report) {
                 if (std ::find(ids.begin(), ids.end(), my_report.alpha.id()) != ids.end())
                 {
-                    std::tuple<unsigned int, double, double, double, double, double, double, double> data(
+                    std::tuple<unsigned int, std::string, double, double, double, double, double, double, double> data(
                         my_report.alpha.id(),
+                        "molecule-molecule",
                         my_report.time(),
                         my_report.alpha.mass(),
                         my_report.alpha.energy.after(),
@@ -56,8 +57,9 @@ public:
                 }
                 if (std ::find(ids.begin(), ids.end(), my_report.beta.id()) != ids.end())
                 {
-                    std::tuple<unsigned int, double, double, double, double, double, double, double> data(
+                    std::tuple<unsigned int, std::string, double, double, double, double, double, double, double> data(
                         my_report.beta.id(),
+                        "molecule-molecule",
                         my_report.time(),
                         my_report.beta.mass(),
                         my_report.beta.energy.after(),
@@ -72,8 +74,9 @@ public:
         my_engine.on<events ::xline>(
             traced1,
             [&](const report<events ::xline> my_report) {
-                std::tuple<unsigned int, double, double, double, double, double, double, double> data(
+                std::tuple<unsigned int, std::string, double, double, double, double, double, double, double> data(
                     my_report.id(),
+                    "molecule-xline",
                     my_report.time(),
                     my_report.mass(),
                     my_report.energy.after(),
@@ -157,12 +160,13 @@ public:
         return my_molecule_id;
     }
     
-    std::vector<std::tuple<double, double, double, double, double, double, double>> get_sim_photo()
+    std::vector<std::tuple<double, double, double, double, double, double, double, double>> get_sim_photo()
     {
-        std::vector<std::tuple<double, double, double, double, double, double, double>> data_vec;
+        std::vector<std::tuple<double, double, double, double, double, double, double, double>> data_vec;
 
         my_engine.each<molecule>([&](const molecule &current_molecule) {
-            data_vec.push_back(std::tuple<double, double, double,  double, double, double, double>(
+            data_vec.push_back(std::tuple<double, double, double, double,  double, double, double, double>(
+                current_molecule.time(),
                 current_molecule.mass(),
                 current_molecule.radius(),
                 current_molecule.energy(),
@@ -176,7 +180,7 @@ public:
         return data_vec;
     }
 
-    std::vector<std::tuple<unsigned int, double, double, double, double, double, double, double>> get_tracking_data()
+    std::vector<std::tuple<unsigned int, std::string, double, double, double, double, double, double, double>> get_tracking_data()
     {
         return tracking;
     }
