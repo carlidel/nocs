@@ -3,6 +3,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <pybind11/iostream.h>
 namespace py = pybind11;
 
 #include <tuple>
@@ -201,6 +202,8 @@ public:
 
 PYBIND11_MODULE(engine_wrapper, m)
 {
+    py::add_ostream_redirect(m, "ostream_redirect");
+
     py::class_<engine_wrapper>(m, "engine_wrapper")
         .def(py::init<int, bool>())
         .def("add_basic_xline", &engine_wrapper::add_basic_xline)

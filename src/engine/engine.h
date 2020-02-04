@@ -12,6 +12,7 @@ class engine;
 
 // Libraries
 
+#include <chrono>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
@@ -105,6 +106,8 @@ private:
 
   // Members
 
+  std::chrono::steady_clock::time_point begin, end, mid;
+  
   heap <event :: wrapper> _events;
   grid _grid;
 

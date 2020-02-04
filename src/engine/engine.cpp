@@ -250,8 +250,26 @@ void engine :: untag(const size_t & id, const uint8_t & tag)
 
 void engine :: run(const double & time)
 {
+  begin = std::chrono::steady_clock::now();
+  end = std::chrono::steady_clock::now();
+  mid = std::chrono::steady_clock::now();
+  double ETA;
+  double starting_time = this->_time;
+  unsigned int mins, hours, secs;
+
   while(this->_events.size() && ((const event *) (this->_events.peek()))->time() <= time)
   {
+    if (std::chrono::duration_cast<std::chrono::seconds>(end - mid).count() > 10)
+    {
+      mid = std::chrono::steady_clock::now();
+      ETA = std::chrono::duration_cast<std::chrono::seconds>(mid - begin).count() * (time - ((const event *)(this->_events.peek()))->time()) / (((const event *)(this->_events.peek()))->time() - starting_time);
+      secs = fmod(ETA, 60);
+      mins = int(ETA / 60) % 60;
+      hours = mins / 60;
+      std::cout << "(" << starting_time << " -> " << ((const event *)(this->_events.peek()))->time() << " -> " << time << ") "
+                << "ETA: " << hours << "h" << mins << "m" << secs << "s" << std::endl;
+    }
+
     event * event = this->_events.pop();
     event->each(this, &engine :: decref);
 
@@ -262,6 +280,7 @@ void engine :: run(const double & time)
     }
 
     delete event;
+    end = std::chrono::steady_clock::now();
   }
 
   if(time > this->_time)
